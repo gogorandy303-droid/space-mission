@@ -1,0 +1,1702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0b1026">
+<title>Present Continuous Space Mission</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root{
+  --bg:#0b1026;--panel:#131c35;--panel-light:#1a2542;--line:#2b3656;
+  --text:#f3f4ff;--muted:#9aa8c7;--mint:#a6f1d2;--purple:#b7a4ff;
+  --gold:#ffcf75;--pink:#ff91aa;--planet:#b7a4ff;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{
+  margin:0;background:var(--bg);color:var(--text);font-family:"Nunito",Arial,sans-serif;
+  background-image:radial-gradient(ellipse at 10% 0%,#22204455,transparent 45%),radial-gradient(ellipse at 95% 90%,#142f4555,transparent 40%);
+  min-height:100vh;
+}
+button,input{font:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:disabled{cursor:default}
+button{color:inherit}
+button:focus-visible,summary:focus-visible{outline:3px solid var(--mint);outline-offset:4px}
+input:focus-visible{outline:2px solid var(--mint);outline-offset:3px}
+button svg{flex-shrink:0}
+.icon{width:20px;height:20px;display:inline-block;vertical-align:middle;flex-shrink:0}
+.sprite{position:absolute;width:0;height:0;overflow:hidden}
+.app{max-width:1392px;padding:24px 36px 22px;margin:auto}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:23px}
+.brand{display:flex;align-items:center;gap:11px;font-family:"Space Grotesk",sans-serif;font-size:14px;font-weight:700;letter-spacing:1.3px}
+.brand-mark{width:37px;height:37px;display:grid;place-items:center;border:1px solid #7966b7;background:#2c254b;border-radius:12px;color:#d2c3ff}
+.brand-mark .icon{width:27px;height:27px}
+.brand small{display:block;color:#8f9bb9;font-family:"Nunito",sans-serif;font-size:9px;letter-spacing:2.5px;margin-top:2px}
+.top-actions{display:flex;gap:9px;align-items:center}
+.edition{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);margin-right:13px}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--mint);box-shadow:0 0 9px #a6f1d244;display:inline-block}
+.tool-button{border:1px solid var(--line);background:#141d35;border-radius:10px;min-width:37px;height:37px;display:flex;align-items:center;justify-content:center;gap:8px;padding:0 10px;transition:.2s}
+.tool-button:hover:not(:disabled){background:#263151;border-color:#667297;transform:translateY(-1px)}
+.tool-button:disabled{opacity:.35}
+.tool-button span{font-size:12px;font-weight:800}
+.mission-header{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:25px}
+.eyebrow{font-size:10px;letter-spacing:2px;font-weight:900;color:var(--mint);margin-bottom:8px}
+h1{font-family:"Space Grotesk",sans-serif;font-size:clamp(24px,2.6vw,34px);letter-spacing:-1.2px;line-height:1.15;margin:0;font-weight:700}
+h1 span{color:#b7a4ff}
+.title-sub{color:var(--muted);font-size:13px;margin:9px 0 0}
+.scoreboard{display:flex;align-items:stretch;gap:8px;flex-shrink:0}
+.stat{min-width:73px;border:1px solid var(--line);border-radius:13px;background:#131b32;padding:10px 13px;display:flex;align-items:center;gap:10px}
+.stat-score{min-width:116px}
+.stat .stat-icon{color:var(--gold);width:22px;height:22px}
+.stat-score .stat-icon{color:var(--purple)}
+.stat-label{display:block;font-size:9px;text-transform:uppercase;letter-spacing:1.4px;color:#a1adca;font-weight:800;margin-bottom:2px}
+.stat-value{display:block;font-family:"Space Grotesk",sans-serif;font-size:22px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
+.life-stat{display:flex;flex-direction:column;justify-content:center;gap:5px;padding:10px 13px;min-width:102px}
+.hearts{display:flex;gap:5px;color:var(--pink)}
+.life{width:20px;height:20px;transition:color .25s,transform .25s}
+.life.empty{color:#34405b;transform:scale(.88)}
+.bump{animation:bump .35s ease}
+@keyframes bump{50%{transform:scale(1.16);color:var(--mint)}}
+.route{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:0;margin:0 0 20px}
+.route-stop{position:relative;display:flex;align-items:center;gap:12px;padding:13px 15px;border:1px solid #26314d;border-radius:13px;background:#10182d;opacity:.63;transition:.4s}
+.route-stop.active{opacity:1;border-color:#7862b0;background:linear-gradient(120deg,#282240,#171d36)}
+.route-stop.done{opacity:1;border-color:#375d57;background:#132c2d}
+.route-stop .route-info{min-width:0}
+.route-name{font-size:13px;font-weight:900;display:block;white-space:nowrap}
+.route-detail{font-size:10px;color:#a0adca;display:block;margin-top:3px;letter-spacing:.15px}
+.route-status{margin-left:auto;width:15px;height:15px;color:#8390ae;flex-shrink:0}
+.route-stop.active .route-status{color:var(--purple)}
+.route-stop.done .route-status{color:var(--mint)}
+.planet-icon{position:relative;display:block;flex-shrink:0;width:31px;height:31px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#d6baff 0,#957add 48%,#4f398b 100%);box-shadow:inset -4px -3px 8px #1e174866,0 0 20px #b9a3ff15}
+.planet-icon:before{content:"";position:absolute;inset:9px -6px;border:2px solid #d1bdff88;border-radius:50%;transform:rotate(-28deg)}
+.planet-icon:after{content:"";position:absolute;width:6px;height:4px;border-radius:50%;background:#ffffff33;top:7px;left:8px;transform:rotate(-25deg)}
+.planet-icon.coral{background:radial-gradient(circle at 28% 25%,#ffd0b6,#e3919a 55%,#894a78)}
+.planet-icon.coral:before{border-color:#ffc4a980}
+.planet-icon.cyan{background:radial-gradient(circle at 30% 25%,#adf8f0,#55b8ca 53%,#336283)}
+.planet-icon.cyan:before{border-color:#99e7ee88}
+.planet-icon.gold{background:radial-gradient(circle at 30% 25%,#ffebb0,#e4b362 55%,#916847)}
+.planet-icon.gold:before{border-color:#ffe2a388}
+.play-layout{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:20px;align-items:stretch}
+.left-flight{min-width:0}
+.stage{height:526px;position:relative;overflow:hidden;border:1px solid #3a4265;border-radius:20px;background:#111a33;isolation:isolate;box-shadow:0 15px 45px #03071544}
+#gameCanvas{display:block;width:100%;height:100%;outline:none;touch-action:none}
+.stage:after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 70px #0b11252b;pointer-events:none;z-index:1}
+.intro-copy{position:absolute;left:38px;top:45px;width:49%;z-index:3;pointer-events:none}
+.intro-kicker{display:inline-flex;align-items:center;gap:7px;color:#d6ccff;background:#242a485c;border:1px solid #67618e66;border-radius:7px;padding:6px 10px;font-size:10px;font-weight:900;letter-spacing:1.3px}
+.intro-copy h2{font-family:"Space Grotesk",sans-serif;font-size:clamp(35px,3.7vw,51px);letter-spacing:-2px;line-height:1.1;margin:24px 0 18px;font-weight:700}
+.intro-copy h2 em{font-style:normal;color:var(--mint)}
+.intro-copy p{font-size:15px;line-height:1.75;max-width:340px;color:#b1bfdc;margin:0 0 25px}
+.primary-button{border:0;border-radius:11px;min-height:48px;padding:13px 22px;background:var(--mint);color:#14382e;display:inline-flex;align-items:center;justify-content:center;gap:12px;font-weight:900;font-size:15px;box-shadow:0 4px 0 #558a7966;transition:background .2s,transform .2s,box-shadow .2s}
+.primary-button:hover:not(:disabled){background:#c5ffe8;transform:translateY(-2px);box-shadow:0 6px 0 #558a7955}
+.primary-button:active:not(:disabled){transform:translateY(1px);box-shadow:0 1px 0 #558a7977}
+.primary-button:disabled{opacity:.4;box-shadow:none}
+.intro-copy .primary-button{pointer-events:auto;min-width:200px}
+.intro-meta{margin-top:15px;display:flex;gap:9px;align-items:center;color:#909fbe;font-size:10px;font-weight:700}
+.intro-meta span{color:#61718f}
+.intro-bubble{position:absolute;right:5%;bottom:54%;padding:12px 16px;z-index:2;color:#253147;background:#f6f4ed;border:2px solid #cad1e5;border-radius:15px 15px 15px 3px;font-weight:900;font-size:13px;transform:rotate(4deg);box-shadow:0 8px 25px #080d2433;animation:floatBubble 4s ease-in-out infinite}
+.intro-bubble small{display:block;font-size:10px;font-weight:700;color:#64748a;margin-top:3px}
+@keyframes floatBubble{50%{transform:translateY(-7px) rotate(2deg)}}
+.intro-caption{position:absolute;bottom:34px;right:10%;color:#a5b6ce;letter-spacing:2px;font-size:9px;z-index:2;display:flex;gap:7px;align-items:center}
+.intro-caption .status-dot{width:5px;height:5px}
+.stage-hud{position:absolute;top:20px;left:21px;right:21px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;pointer-events:none;z-index:3}
+.location-pill{background:#0d152bca;border:1px solid #64709355;border-radius:10px;padding:10px 13px;backdrop-filter:blur(8px)}
+.location-pill small{display:block;font-size:8px;letter-spacing:1.6px;color:var(--planet);font-weight:900;margin-bottom:4px}
+.location-pill strong{font-family:"Space Grotesk",sans-serif;font-size:14px;font-weight:600}
+.gate-counter{display:flex;align-items:center;gap:7px;background:#0d152bca;border:1px solid #64709355;padding:10px 12px;border-radius:10px;font-size:11px;font-weight:800;backdrop-filter:blur(8px)}
+.gate-counter .icon{color:var(--mint);width:16px;height:16px}
+.interact-wrap{position:absolute;bottom:27px;left:50%;transform:translateX(-50%);z-index:5;text-align:center;white-space:nowrap}
+.interact-button{min-height:47px;display:flex;align-items:center;gap:12px;border:1px solid #c5ffe8;background:#a6f1d2;color:#173a32;padding:9px 16px;border-radius:11px;font-weight:900;font-size:14px;box-shadow:0 5px 24px #061d1966;animation:interactPulse 2s infinite}
+.interact-button kbd{border-color:#5eaa9266;background:#183e3220;color:#153d31;box-shadow:none}
+@keyframes interactPulse{50%{box-shadow:0 0 0 5px #a6f1d212,0 5px 24px #061d1966}}
+.toast{position:absolute;left:50%;top:87px;transform:translate(-50%,-12px);padding:10px 16px;border:1px solid #64789b66;border-radius:10px;background:#101b34ed;color:#e6ecff;max-width:85%;width:max-content;text-align:center;font-size:12px;font-weight:800;opacity:0;pointer-events:none;transition:.25s;z-index:7;box-shadow:0 5px 20px #0003}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.toast.positive{border-color:#96dfbf88;color:#b9f7dc}
+.flight-footer{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 4px 0;min-height:43px}
+.keyboard-tips{display:flex;gap:17px;align-items:center;color:#8f9bb8;font-size:10px}
+.key-group{display:flex;align-items:center;gap:5px}
+kbd{font-family:"Nunito",sans-serif;display:inline-flex;align-items:center;justify-content:center;border:1px solid #465171;border-bottom-width:2px;border-radius:5px;min-width:22px;height:23px;padding:0 5px;color:#c7d1e6;background:#19233c;font-size:10px;font-weight:800}
+.link-button{padding:0;background:none;border:none;color:#a9b7d1;display:flex;align-items:center;gap:7px;font-size:10px;font-weight:800}
+.link-button:hover{color:var(--mint)}
+.link-button .icon{width:14px;height:14px}
+.touch-help{display:none;color:#92a0be;font-size:10px}
+.mission-console{display:flex;flex-direction:column;gap:15px}
+.console-card{padding:21px;border-radius:18px;border:1px solid var(--line);background:linear-gradient(150deg,#18213b,#131b32)}
+.card-label{display:flex;align-items:center;justify-content:space-between;font-size:9px;font-weight:900;letter-spacing:1.8px;color:#96a6c6;margin-bottom:22px}
+.card-label .icon{width:15px;height:15px;color:var(--purple)}
+.destination{display:flex;align-items:center;gap:14px;margin-bottom:17px}
+.destination .planet-icon{width:40px;height:40px;margin:0 5px}
+.destination small{color:var(--planet);font-size:9px;font-weight:900;letter-spacing:1.3px;display:block;margin-bottom:5px}
+.destination h3{font-family:"Space Grotesk",sans-serif;font-size:17px;line-height:1.22;margin:0;letter-spacing:-.3px}
+.console-description{font-size:12px;line-height:1.75;color:#a5b2cf;margin:0 0 19px}
+.log-line{display:flex;align-items:center;gap:10px;font-size:11px;margin:13px 0;color:#d0d8e9}
+.log-icon{width:24px;height:24px;border-radius:7px;background:#2a2948;display:grid;place-items:center;color:#c5b6fc;flex-shrink:0}
+.log-icon .icon{width:14px;height:14px}
+.log-line:nth-of-type(2) .log-icon{background:#443a29;color:var(--gold)}
+.log-line b{margin-left:auto;font-size:10px;color:var(--mint);white-space:nowrap}
+.log-divider{height:1px;background:#2b3552;margin:18px 0 15px}
+.formula-label{font-size:9px;text-transform:uppercase;letter-spacing:1.3px;color:#8696b7;font-weight:800;margin-bottom:10px}
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:5px;font-size:10px;font-weight:800;line-height:1.6}
+.formula span{padding:4px 7px;background:#2a2947;border:1px solid #443d63;border-radius:5px;color:#d5c9ff}
+.formula span:last-child{background:#193e39;border-color:#31574f;color:#aff1d6}
+.formula i{font-style:normal;color:#7b89aa;font-size:12px}
+.field-note{position:relative;background:#eeeef1;color:#263955;border-radius:14px;padding:19px 20px 17px;box-shadow:0 4px 0 #78829e55;transform:rotate(-1deg);flex-grow:1}
+.field-note:before{content:"";position:absolute;top:-5px;left:calc(50% - 24px);width:48px;height:13px;transform:rotate(5deg);background:#c9b7fcaa;border:1px solid #d6c8ff66}
+.note-label{display:flex;align-items:center;gap:6px;color:#bf5e6e;font-size:9px;letter-spacing:1.7px;font-weight:900;margin-bottom:11px}
+.note-label .icon{width:13px;height:13px}
+.field-note h4{font-family:"Space Grotesk",sans-serif;font-size:14px;margin:0 0 10px;font-weight:700}
+.field-note p{font-size:12px;line-height:1.8;margin:0;color:#5e6e85}
+.field-note b{color:#39476a;font-weight:900}
+.field-note .note-source{border-top:1px dashed #b9c0cf;padding-top:9px;margin-top:12px;font-size:9px;color:#78869a;font-weight:800}
+.mission-progress{display:flex;align-items:center;gap:19px;margin-top:20px;border:1px solid #27314b;border-radius:13px;padding:15px 20px;background:#10192e}
+.progress-text{display:flex;align-items:center;gap:11px;color:#a8b5cd;font-size:11px;white-space:nowrap}
+.progress-text .icon{color:var(--mint);width:18px;height:18px}
+.progress-text strong{font-family:"Space Grotesk",sans-serif;color:#ebeffc;font-size:12px}
+.progress-track{background:#24304a;height:6px;border-radius:8px;overflow:hidden;flex:1;min-width:40px}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#9384e7,#a6efd5);border-radius:inherit;transition:width .5s}
+.progress-percent{font-family:"Space Grotesk",sans-serif;font-size:12px;color:#c2cce0;min-width:29px}
+.progress-note{color:#697b9f;font-size:8px;font-weight:800;letter-spacing:1.4px;white-space:nowrap;margin-left:10px}
+.touch-controls{position:absolute;left:16px;right:16px;bottom:16px;z-index:4;display:none;align-items:center;justify-content:space-between;pointer-events:none}
+.touch-move{display:flex;gap:9px}
+.touch-button{width:53px;height:51px;border:1px solid #9aaccb66;background:#14223fbd;border-radius:13px;color:#e0e9ff;display:flex;align-items:center;justify-content:center;pointer-events:auto;touch-action:none;user-select:none;backdrop-filter:blur(7px)}
+.touch-button .icon{width:23px;height:23px}
+.touch-button.pressed{background:#536488b3;border-color:#bddbcc;transform:scale(.95)}
+.touch-button.jump{width:66px;height:57px;background:#7f75b64f;border-color:#c4b6ff80;flex-direction:column;gap:1px}
+.touch-button.jump span{font-size:8px;font-weight:900;letter-spacing:1px}
+.modal-layer{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;z-index:50;background:#050a1ac7;backdrop-filter:blur(8px);overflow:auto;overscroll-behavior:contain}
+.dialog{width:100%;max-width:640px;max-height:calc(100dvh - 40px);overflow-y:auto;border:1px solid #465476;border-radius:23px;padding:28px;background:linear-gradient(135deg,#1b2542,#111a32);box-shadow:0 35px 100px #0007;position:relative;animation:dialogIn .25s ease}
+@keyframes dialogIn{from{opacity:0;transform:translateY(15px) scale(.98)}to{opacity:1;transform:none}}
+.dialog-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:15px}
+.mission-badge{display:flex;align-items:center;gap:8px;color:var(--planet);font-size:10px;letter-spacing:1.3px;font-weight:900}
+.mission-badge .icon{width:16px;height:16px}
+.close-button{width:29px;height:29px;display:grid;place-items:center;border:1px solid #43506c;background:#ffffff05;border-radius:8px;color:#a9b6d3;flex-shrink:0}
+.close-button:hover{color:white;background:#ffffff12}
+.close-button .icon{width:16px;height:16px}
+.source-label{font-size:10px;color:#98a9cb;letter-spacing:.25px;line-height:1.5;margin-bottom:8px}
+.dialog h2{font-family:"Space Grotesk",sans-serif;letter-spacing:-.7px;font-size:27px;line-height:1.25;margin:0 0 10px}
+.quiz-instruction{font-size:14px;color:#b4c1db;line-height:1.6;margin:0 0 20px}
+.sentence-panel{padding:21px 22px;background:#f0f1f7;border:1px solid #dce1ef;border-radius:12px;color:#243550;font-size:23px;font-weight:800;line-height:1.9;margin-bottom:20px}
+.sentence-panel .gap{display:inline-block;min-width:98px;padding:0 9px;line-height:1.45;border-bottom:2px dotted #776da6;color:#8b80b4;text-align:center;background:#b9a4eb15;border-radius:5px 5px 0 0;margin:0 3px}
+.sentence-panel .gap.solved{color:#15795d;border-bottom:2px solid #53ac8d;background:#68d7ae20}
+.given-verb{font-size:16px;color:#6d638d;white-space:nowrap}
+.order-origin{font-size:16px;line-height:1.8;font-weight:700;color:#435271}
+.order-origin small{display:block;font-size:9px;font-weight:900;color:#8a7d9f;letter-spacing:1.5px;margin-bottom:5px}
+.answer-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.answer-choice{border:1px solid #485574;background:#1c2946;padding:19px 9px 16px;min-height:68px;border-radius:11px;font-size:18px;font-weight:800;position:relative;transition:.15s}
+.answer-choice:hover:not(:disabled){background:#2b3657;border-color:#ae9cfa;transform:translateY(-2px)}
+.answer-choice.selected{background:#393359;border-color:#c6b5ff;box-shadow:0 0 0 1px #c6b5ff}
+.answer-choice.correct{border-color:#9defcc;background:#21483e;color:#c0ffe1}
+.answer-choice.incorrect{border-color:#e9849b;background:#4b2b41;color:#ffc6d0}
+.answer-choice.disabled-wrong{opacity:.35}
+.choice-number{position:absolute;left:9px;top:5px;font-family:"Space Grotesk",sans-serif;font-size:9px;color:#9eacc5}
+.fill-label{display:block;font-size:11px;font-weight:800;color:#a9b9d7;margin:0 0 9px}
+.answer-input{background:#0f1830;border:1px solid #586480;color:#f2f4ff;font-size:22px;font-weight:800;padding:15px 17px;border-radius:11px;width:100%;letter-spacing:.3px}
+.answer-input::placeholder{color:#667694;font-size:17px;font-weight:600}
+.answer-input:disabled{opacity:.8}
+.answer-tray{min-height:74px;border:1px dashed #637298;background:#0d1730;border-radius:11px;padding:11px;display:flex;flex-wrap:wrap;align-items:center;gap:7px}
+.tray-placeholder{font-size:13px;color:#7587ab;padding:5px}
+.word-bank{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.word-chip{background:#293554;color:#e8edff;border:1px solid #526083;border-bottom:3px solid #384566;border-radius:8px;padding:9px 13px;font-size:16px;font-weight:800;transition:transform .15s,background .15s}
+.word-chip:hover:not(:disabled){transform:translateY(-2px);background:#394664}
+.word-chip.chosen{background:#3a3456;border-color:#9681d3;color:#e9dfff}
+.word-chip.used{opacity:.2;border-style:dashed}
+.tile-tools{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#91a1c1;font-size:10px;margin-top:10px}
+.tile-tools button{font-size:11px;color:var(--purple)}
+.feedback{display:flex;gap:12px;padding:15px 16px;border-radius:11px;margin-top:18px;border:1px solid #468570;background:#204c3e66;color:#c0f7df}
+.feedback .icon{margin-top:2px;width:20px;height:20px}
+.feedback.wrong{background:#56304066;border-color:#a2607b;color:#ffd0d9}
+.feedback strong{font-size:14px;display:block;margin-bottom:4px}
+.feedback p{font-size:12px;line-height:1.75;margin:0}
+.quiz-footer{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-top:23px;padding-top:19px;border-top:1px solid #303e5d}
+.reward-note{color:#9eacc9;font-size:10px;line-height:1.8}
+.reward-note .icon{width:12px;height:12px;color:var(--gold);margin-right:4px}
+.reward-note small{display:block;font-size:9px;color:#7488ab}
+.quiz-footer .primary-button{min-width:158px;font-size:13px;min-height:44px}
+.center-dialog{text-align:center;max-width:505px;padding:35px}
+.center-dialog .eyebrow{margin:18px 0 12px}
+.center-dialog p{color:#aebbd6;font-size:14px;line-height:1.8;margin:12px 0 24px}
+.center-dialog h2{font-size:31px}
+.center-dialog .primary-button{width:100%}
+.secondary-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#23304d;border:1px solid #4a5777;border-radius:10px;padding:12px 20px;min-height:45px;color:#ced8ee;font-size:13px;font-weight:800;transition:.2s}
+.secondary-button:hover{background:#32405e;border-color:#91a3c5}
+.center-dialog .secondary-button{width:100%;margin-top:11px}
+.big-emblem{width:87px;height:87px;border:1px solid #64709666;background:#292c4d;border-radius:26px;display:grid;place-items:center;margin:4px auto 19px;color:var(--purple);transform:rotate(-6deg)}
+.big-emblem .icon{width:42px;height:42px;transform:rotate(6deg)}
+.travel-orbit{height:145px;position:relative;margin:8px auto 15px;max-width:285px;display:flex;align-items:center;justify-content:center}
+.travel-orbit:before{content:"";position:absolute;inset:20px 0;border:1px dashed #68759777;border-radius:50%;transform:rotate(-18deg)}
+.travel-orbit .planet-icon{width:86px;height:86px}
+.travel-orbit .planet-icon:before{inset:29px -15px;border-width:4px}
+.travel-orbit .planet-icon:after{width:16px;height:10px;top:23px;left:20px}
+.travel-rocket{position:absolute;right:23px;top:6px;color:var(--mint);animation:rocketFloat 3s ease-in-out infinite}
+.travel-rocket .icon{width:42px;height:42px}
+@keyframes rocketFloat{50%{transform:translate(9px,-10px) rotate(8deg)}}
+.refill-note{display:flex;align-items:center;justify-content:center;gap:7px;color:#efacc0;font-size:11px;font-weight:800;margin:0 0 22px}
+.refill-note .icon{width:14px;height:14px}
+.result-art{width:135px;height:135px;margin:auto;display:block;filter:drop-shadow(0 0 25px #a6efba22);animation:floatBubble 4s infinite}
+.victory-title{color:var(--mint);font-size:32px!important;letter-spacing:-.9px!important}
+.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:24px 0}
+.result-stat{padding:15px 7px;border:1px solid #3e4c6e;background:#111a31aa;border-radius:12px}
+.result-stat .icon{color:var(--gold);width:20px;height:20px;margin-bottom:9px}
+.result-stat strong{display:block;font-family:"Space Grotesk",sans-serif;font-size:27px}
+.result-stat span{display:block;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#99abcb;margin-top:4px}
+.best-note{font-size:11px!important;color:#b4a5e9!important;margin:0 0 21px!important}
+.confetti-wrap{position:absolute;inset:0;overflow:hidden;pointer-events:none;border-radius:inherit}
+.confetti-piece{position:absolute;top:-20px;width:6px;height:13px;animation:confettiFall 5s linear infinite;opacity:.8}
+@keyframes confettiFall{to{transform:translate(35px,850px) rotate(600deg);opacity:.15}}
+.help-dialog{max-width:690px}
+.help-dialog .dialog-top{margin-bottom:17px}
+.help-dialog h2{font-size:24px;margin:0}
+.help-tabs{display:flex;gap:8px;margin-bottom:23px;border-bottom:1px solid #34425e;padding-bottom:15px}
+.help-tab{border:1px solid #3b4969;background:#18253e;padding:9px 13px;border-radius:8px;font-size:12px;font-weight:800;color:#a7b6d2}
+.help-tab.active{background:#393255;border-color:#a495db;color:#e5ddff}
+.help-panel{font-size:14px;line-height:1.8;color:#b6c4df}
+.help-panel h3{font-family:"Space Grotesk",sans-serif;color:#eff3ff;font-size:18px;margin:19px 0 8px}
+.help-panel p{margin:9px 0 15px}
+.help-panel ul{padding-left:22px}
+.control-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #303d56}
+.control-row span{margin-left:auto;text-align:right;font-size:12px}
+.guide-rule{background:#0e1830;border:1px solid #3f4d6c;border-radius:10px;padding:16px;margin:12px 0;color:#d9ceff;font-weight:800}
+.guide-rule strong{display:block;font-size:11px;color:var(--mint);margin-bottom:6px;letter-spacing:1px}
+.guide-rule small{display:block;color:#9aaece;font-weight:600;margin-top:7px;font-size:12px}
+.source-disclosure{padding:13px 15px;border-left:3px solid var(--purple);background:#312b474d;border-radius:0 8px 8px 0;font-size:12px}
+.worksheet-paper{background:#fafbff;color:#17385b;padding:24px 22px;border:1px solid #c9d2e1;border-radius:3px;box-shadow:0 6px 0 #a3adbe33;font-family:Arial,sans-serif;font-size:13px;line-height:1.8}
+.worksheet-paper .paper-title{text-align:center;font-family:Georgia,serif;letter-spacing:2px;font-size:28px;font-weight:700;margin-bottom:15px;color:#173967}
+.worksheet-paper h4{color:#d14649;text-decoration:underline;font-size:15px;margin:17px 0 12px}
+.worksheet-paper ol{padding-left:23px}
+.worksheet-paper li{padding-left:5px;margin-bottom:11px}
+.paper-page{text-align:center;margin-top:22px;font-size:11px}
+.answer-key{border:1px solid #435273;border-radius:10px;margin-top:17px;padding:12px 15px;font-size:12px}
+.answer-key summary{cursor:pointer;font-weight:900;color:var(--mint)}
+.answer-key p{margin-bottom:0}
+@media(min-width:1250px){
+  .mission-header h1 span{display:block}
+}
+@media(max-width:1150px){
+  .app{padding:22px 25px}
+  .play-layout{grid-template-columns:minmax(0,1fr) 247px;gap:17px}
+  .console-card{padding:19px}
+  .intro-copy{left:29px;width:50%}
+  .intro-copy h2{font-size:39px}
+  .intro-copy p{font-size:13px}
+  h1{max-width:470px;font-size:28px}
+  .route-name{font-size:11px}
+  .route-stop{gap:10px;padding:12px}
+  .progress-note{display:none}
+}
+@media(max-width:1030px){
+  .play-layout{grid-template-columns:minmax(0,1fr)}
+  .mission-console{display:none}
+  .stage{height:520px}
+  .intro-copy{left:45px;top:51px;max-width:400px}
+  .intro-copy h2{font-size:49px}
+  .intro-copy p{font-size:15px}
+  .mission-header{gap:18px}
+  .scoreboard{gap:6px}
+  .stat{padding:10px;min-width:65px;gap:7px}
+  .stat-score{min-width:102px}
+  .life-stat{min-width:95px}
+  h1{font-size:27px;max-width:380px}
+  .title-sub{font-size:11px}
+}
+@media(max-width:760px){
+  .app{padding:18px 17px}
+  .topbar{padding-bottom:19px}
+  .edition{display:none}
+  .brand{font-size:12px;letter-spacing:1px}
+  .brand-mark{width:32px;height:32px}
+  .tool-button{height:33px;min-width:33px;padding:0 8px}
+  .top-actions{gap:6px}
+  .tool-button span{display:none}
+  .mission-header{align-items:flex-start;flex-direction:column;gap:16px;margin-bottom:18px}
+  h1{max-width:none;font-size:27px}
+  h1 span{display:inline}
+  .eyebrow{font-size:8px;letter-spacing:1.7px}
+  .title-sub{font-size:12px;margin-top:7px}
+  .scoreboard{width:100%;gap:7px}
+  .stat{flex:1;padding:9px 12px;min-width:0;border-radius:10px}
+  .stat-score{flex:1.5}
+  .stat-value{font-size:20px}
+  .stat-label{font-size:8px;letter-spacing:1px}
+  .life-stat{flex:1.15;min-width:90px}
+  .hearts{gap:4px}
+  .life{width:18px;height:18px}
+  .route{gap:6px;margin-bottom:15px}
+  .route-stop{padding:10px 5px;gap:8px;justify-content:center;flex-direction:column;border-radius:10px;text-align:center}
+  .route-stop .planet-icon{width:24px;height:24px}
+  .route-stop .planet-icon:before{inset:7px -4px}
+  .route-name{font-size:9px;white-space:normal;line-height:1.2}
+  .route-detail,.route-status{display:none}
+  .stage{height:455px;border-radius:16px}
+  .stage.is-intro{height:520px}
+  .intro-copy{left:29px;top:35px;max-width:330px;width:52%}
+  .intro-copy h2{font-size:39px;letter-spacing:-1.4px}
+  .intro-copy p{font-size:13px}
+  .intro-kicker{font-size:8px;letter-spacing:1px}
+  .intro-meta{font-size:9px;gap:6px;flex-wrap:wrap}
+  .intro-bubble{font-size:11px;padding:10px 12px}
+  .intro-bubble small{font-size:9px}
+  .intro-caption{font-size:8px}
+  .stage-hud{left:13px;right:13px;top:13px}
+  .location-pill{padding:8px 10px}
+  .location-pill strong{font-size:12px}
+  .gate-counter{font-size:10px;padding:9px}
+  .mission-progress{padding:13px;gap:12px;margin-top:15px}
+  .progress-text{font-size:10px;gap:8px}
+  .progress-text strong{font-size:11px}
+}
+@media(pointer:coarse),(max-width:720px){
+  .touch-controls{display:flex}
+  .keyboard-tips{display:none}
+  .touch-help{display:block}
+  .interact-wrap{bottom:85px}
+  .interact-button{font-size:12px;padding:8px 13px;min-height:42px}
+  .interact-button kbd{display:none}
+}
+@media(max-width:520px){
+  .app{padding:15px 13px}
+  .brand small{font-size:7px}
+  .brand{gap:8px;font-size:11px}
+  h1{font-size:25px;line-height:1.18;letter-spacing:-.8px}
+  h1 span{display:block}
+  .title-sub{font-size:11px}
+  .mission-header{gap:14px}
+  .stat{padding:8px;gap:6px}
+  .stat .stat-icon{width:17px;height:17px}
+  .stat-value{font-size:19px}
+  .life-stat{min-width:83px}
+  .route-stop{gap:8px}
+  .stage.is-intro{height:575px}
+  .stage{height:455px}
+  .intro-copy{left:25px;right:22px;top:29px;width:auto;max-width:none}
+  .intro-copy h2{font-size:40px;max-width:320px;line-height:1.06;margin:19px 0 13px}
+  .intro-copy p{max-width:288px;font-size:13px;line-height:1.65;margin-bottom:18px}
+  .intro-copy .primary-button{min-width:188px;min-height:45px;font-size:14px;padding:11px 17px}
+  .intro-meta{font-size:9px;margin-top:12px}
+  .intro-bubble{bottom:139px;right:8%;font-size:10px;padding:8px 10px}
+  .intro-bubble small{font-size:8px}
+  .intro-caption{right:8%;bottom:18px;font-size:7px}
+  .location-pill strong{font-size:11px}
+  .gate-counter{font-size:9px;gap:5px}
+  .gate-counter .icon{width:13px;height:13px}
+  .toast{font-size:10px;top:70px;max-width:92%;padding:9px 12px;white-space:normal}
+  .flight-footer{padding-top:11px;gap:8px}
+  .touch-help,.link-button{font-size:9px}
+  .mission-progress{padding:12px 11px;gap:9px}
+  .progress-text{font-size:9px;gap:6px}
+  .progress-text .icon{width:15px;height:15px}
+  .progress-percent{font-size:10px;min-width:24px}
+  .modal-layer{padding:12px}
+  .dialog{padding:21px 19px;max-height:calc(100dvh - 24px);border-radius:18px}
+  .dialog h2{font-size:23px}
+  .quiz-instruction{font-size:12px;margin-bottom:16px}
+  .sentence-panel{font-size:20px;padding:16px;line-height:1.85;margin-bottom:17px}
+  .given-verb{font-size:13px}
+  .sentence-panel .gap{min-width:72px;padding:0 5px}
+  .answer-options{gap:7px}
+  .answer-choice{font-size:15px;min-height:64px;padding:19px 5px 13px}
+  .answer-options.long-options{grid-template-columns:1fr}
+  .long-options .answer-choice{min-height:45px;padding:11px 20px;font-size:16px}
+  .long-options .choice-number{top:17px;left:13px}
+  .quiz-footer{gap:10px;margin-top:19px;padding-top:16px}
+  .quiz-footer .primary-button{font-size:12px;padding:11px 14px;min-width:130px;gap:7px}
+  .reward-note{font-size:9px}
+  .reward-note small{font-size:8px}
+  .word-chip{font-size:14px;padding:8px 10px}
+  .order-origin{font-size:13px}
+  .feedback{padding:12px;gap:9px}
+  .feedback strong{font-size:12px}
+  .feedback p{font-size:11px}
+  .center-dialog{padding:27px 23px}
+  .center-dialog h2{font-size:27px}
+  .center-dialog p{font-size:13px}
+  .victory-title{font-size:27px!important}
+  .result-art{width:111px;height:111px}
+  .result-stat strong{font-size:24px}
+  .help-tabs{gap:6px}
+  .help-tab{font-size:10px;padding:9px 10px;flex:1}
+  .help-panel{font-size:12px}
+  .worksheet-paper{padding:18px 13px;font-size:11px}
+  .worksheet-paper h4{font-size:13px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+<svg class="sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<symbol id="i-planet" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="1.6"/><ellipse cx="12" cy="12" rx="12" ry="3.5" transform="rotate(-30 12 12)" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="10" cy="8" r="1.1" fill="currentColor"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2 3.1 6.4 7.1 1-5.1 5 .9 7.1-6-3.4-6 3.4.9-7.1-5.1-5 7.1-1Z" fill="currentColor"/></symbol>
+<symbol id="i-coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="6" fill="none" stroke="currentColor" stroke-width="1"/><path d="m13.5 7-4 5h5l-4 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 21 3.4 12.5C-2.1 6.8 5.7.1 12 6.5 18.3.1 26.1 6.8 20.6 12.5Z" fill="currentColor"/></symbol>
+<symbol id="i-rocket" viewBox="0 0 24 24"><path d="M9 15c-2-4 1-10 11-12 0 10-6 13-10 12Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="15.5" cy="7.8" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m9 7-5 2-1 5 5-1m9 2-2 5-5 1 1-5M7 17l-4 4m2-5-3 3m6 0-3 3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-left" viewBox="0 0 24 24"><path d="m14 5-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-right" viewBox="0 0 24 24"><path d="m10 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-up" viewBox="0 0 24 24"><path d="m5 14 7-7 7 7M12 7v14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+<symbol id="i-gate" viewBox="0 0 24 24"><path d="M3 21V6l3-3h12l3 3v15M7 21V7h10v14M1 21h8m6 0h8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 10v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="1 2"/></symbol>
+<symbol id="i-book" viewBox="0 0 24 24"><path d="M12 5C8 2 4 3 2 4v15c4-2 7-1 10 1 3-2 6-3 10-1V4c-2-1-6-2-10 1Zm0 0v15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+<symbol id="i-sound" viewBox="0 0 24 24"><path d="m10 4-5 5H2v6h3l5 5V4Zm5 4a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-mute" viewBox="0 0 24 24"><path d="m10 4-5 5H2v6h3l5 5V4Zm5 5 7 7m0-7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 11v6m0-10v.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 22V3m0 1c5-4 9 4 15 0v11c-6 4-10-4-15 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="alien-art" viewBox="0 0 140 140">
+  <ellipse cx="71" cy="131" rx="38" ry="6" fill="#070f26" opacity=".45"/>
+  <path d="M46 91 32 99 22 85m73 5 15-11 5-13" stroke="#a7edc6" stroke-width="12" stroke-linecap="round" fill="none"/>
+  <path d="m54 116-4 13m35-13 5 13" stroke="#a7edc6" stroke-width="13" stroke-linecap="round"/>
+  <path d="m42 48-7-22m61 21 8-23" stroke="#79bb9a" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="34" cy="24" r="7" fill="#ffd77c"/><circle cx="105" cy="23" r="7" fill="#ffd77c"/>
+  <rect x="44" y="81" width="51" height="40" rx="17" fill="#a296db" stroke="#383456" stroke-width="3"/>
+  <path d="M47 106h46" stroke="#d5c9fb" stroke-width="5"/>
+  <ellipse cx="70" cy="62" rx="43" ry="35" fill="#aceec7" stroke="#396a63" stroke-width="3"/>
+  <ellipse cx="51" cy="57" rx="12" ry="15" fill="#f0fff5"/><ellipse cx="88" cy="57" rx="12" ry="15" fill="#f0fff5"/>
+  <ellipse cx="54" cy="59" rx="7" ry="10" fill="#203948"/><ellipse cx="85" cy="59" rx="7" ry="10" fill="#203948"/>
+  <circle cx="56" cy="55" r="3" fill="white"/><circle cx="87" cy="55" r="3" fill="white"/>
+  <path d="M60 77q10 10 20 0" stroke="#396a63" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <ellipse cx="40" cy="73" rx="7" ry="4" fill="#f4b3b7" opacity=".65"/><ellipse cx="101" cy="73" rx="7" ry="4" fill="#f4b3b7" opacity=".65"/>
+  <path d="m70 93 2.5 5 5.5.7-4 4 .9 5.4-4.9-2.6-4.9 2.6.9-5.4-4-4 5.5-.7Z" fill="#ffdd88"/>
+</symbol>
+</svg>
+
+<div class="app" id="app">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark"><svg class="icon"><use href="#i-planet"/></svg></div>
+      <div>GRAMMAR GALAXY<small>BIG ADVENTURES. BRIGHT MINDS.</small></div>
+    </div>
+    <div class="top-actions">
+      <div class="edition"><span class="status-dot"></span> Form 3 · English lab</div>
+      <button class="tool-button" id="guideButton" title="Mission guide" aria-label="Open mission guide"><svg class="icon"><use href="#i-book"/></svg><span>Mission guide</span></button>
+      <button class="tool-button" id="soundButton" title="Turn sound off" aria-label="Turn sound off" aria-pressed="true"><svg class="icon" id="soundOnIcon"><use href="#i-sound"/></svg><svg class="icon" id="soundOffIcon" hidden><use href="#i-mute"/></svg></button>
+      <button class="tool-button" id="pauseButton" title="Pause mission (Esc)" aria-label="Pause mission" disabled><svg class="icon"><use href="#i-pause"/></svg></button>
+    </div>
+  </header>
+
+  <section class="mission-header">
+    <div>
+      <div class="eyebrow">YOUR NEXT GREAT LEARNING ADVENTURE</div>
+      <h1>Present Continuous <span>Space Mission</span></h1>
+      <p class="title-sub">One small step for you. One giant leap for your grammar.</p>
+    </div>
+    <div class="scoreboard" aria-label="Mission statistics">
+      <div class="stat stat-score"><svg class="stat-icon"><use href="#i-rocket"/></svg><div><span class="stat-label">Score</span><strong class="stat-value" id="scoreValue">0000</strong></div></div>
+      <div class="stat"><svg class="stat-icon"><use href="#i-star"/></svg><div><span class="stat-label">Stars</span><strong class="stat-value" id="starValue">00</strong></div></div>
+      <div class="stat"><svg class="stat-icon"><use href="#i-coin"/></svg><div><span class="stat-label">Coins</span><strong class="stat-value" id="coinValue">00</strong></div></div>
+      <div class="stat life-stat"><span class="stat-label">Your lives</span><div class="hearts" id="hearts" aria-label="3 lives remaining"><svg class="life"><use href="#i-heart"/></svg><svg class="life"><use href="#i-heart"/></svg><svg class="life"><use href="#i-heart"/></svg></div></div>
+    </div>
+  </section>
+
+  <ol class="route" aria-label="Mission route">
+    <li class="route-stop active"><span class="planet-icon"></span><div class="route-info"><span class="route-name">Affirmative Planet</span><span class="route-detail">01 · 10 verb missions</span></div><svg class="route-status"><use href="#i-flag"/></svg></li>
+    <li class="route-stop"><span class="planet-icon coral"></span><div class="route-info"><span class="route-name">Negative Planet</span><span class="route-detail">02 · 3 practice missions</span></div><svg class="route-status"><use href="#i-lock"/></svg></li>
+    <li class="route-stop"><span class="planet-icon cyan"></span><div class="route-info"><span class="route-name">Space Challenge</span><span class="route-detail">03 · 4 word trails</span></div><svg class="route-status"><use href="#i-lock"/></svg></li>
+    <li class="route-stop"><span class="planet-icon gold"></span><div class="route-info"><span class="route-name">The Grammar Alien</span><span class="route-detail">FINAL · 3 friendly tests</span></div><svg class="route-status"><use href="#i-lock"/></svg></li>
+  </ol>
+
+  <main class="play-layout">
+    <div class="left-flight">
+      <section class="stage is-intro" id="stage" aria-label="Space adventure game">
+        <canvas id="gameCanvas" tabindex="0" aria-label="Space platformer. Use arrow keys or A and D to move, Space to double jump, and E to interact with a gate.">Explore the planets, collect stars, and answer questions at the gates.</canvas>
+        <div class="stage-hud" id="stageHud" hidden>
+          <div class="location-pill"><small id="sectorLabel">SECTOR 01 · EXPLORATION</small><strong id="locationLabel">Affirmative Planet</strong></div>
+          <div class="gate-counter"><svg class="icon"><use href="#i-gate"/></svg><span id="gateCount">0 / 10 gates powered</span></div>
+        </div>
+        <div class="intro-copy" id="introCopy">
+          <div class="intro-kicker"><span class="status-dot"></span> FORM 3 · WORKSHEET-POWERED</div>
+          <h2>Your grammar.<br>Your <em>galaxy.</em></h2>
+          <p>The stars are losing their glow! Suit up, explore new planets, and power the space gates with your present continuous skills.</p>
+          <button class="primary-button" id="startButton">Launch mission <svg class="icon"><use href="#i-rocket"/></svg></button>
+          <div class="intro-meta">3 planets + 1 friendly boss <span>•</span> No timer</div>
+        </div>
+        <div class="intro-bubble" id="introBubble">Hey, cadet!<small>Ready to make the stars shine?</small></div>
+        <div class="intro-caption" id="introCaption"><span class="status-dot"></span> ALL SYSTEMS READY FOR ADVENTURE</div>
+        <div class="interact-wrap" id="interactWrap" hidden>
+          <button class="interact-button" id="interactButton"><kbd>E</kbd><span id="interactText">Power this gate</span><svg class="icon"><use href="#i-arrow"/></svg></button>
+        </div>
+        <div class="toast" id="toast" role="status"></div>
+        <div class="touch-controls" id="touchControls" hidden aria-label="Touch movement controls">
+          <div class="touch-move">
+            <button class="touch-button" id="leftControl" aria-label="Move left"><svg class="icon"><use href="#i-left"/></svg></button>
+            <button class="touch-button" id="rightControl" aria-label="Move right"><svg class="icon"><use href="#i-right"/></svg></button>
+          </div>
+          <button class="touch-button jump" id="jumpControl" aria-label="Jump. Tap twice to double jump."><svg class="icon"><use href="#i-up"/></svg><span>JUMP</span></button>
+        </div>
+      </section>
+      <div class="flight-footer">
+        <div class="keyboard-tips">
+          <span class="key-group"><kbd>←</kbd><kbd>→</kbd> Move</span>
+          <span class="key-group"><kbd>SPACE</kbd> Double jump</span>
+          <span class="key-group"><kbd>E</kbd> Interact</span>
+        </div>
+        <span class="touch-help">Move · Jump twice for a jetpack boost</span>
+        <button class="link-button" id="sourceButton"><svg class="icon"><use href="#i-book"/></svg>Worksheet notes <svg class="icon"><use href="#i-arrow"/></svg></button>
+      </div>
+    </div>
+
+    <aside class="mission-console">
+      <section class="console-card">
+        <div class="card-label">MISSION CONTROL <svg class="icon"><use href="#i-planet"/></svg></div>
+        <div class="destination"><span class="planet-icon" id="sidePlanet"></span><div><small id="sideSector">FIRST STOP</small><h3 id="sideTitle">Affirmative<br>Planet</h3></div></div>
+        <p class="console-description" id="sideDescription">Explore the platforms and repair the gates. Every correct verb brings the galaxy back to life.</p>
+        <div class="log-line"><span class="log-icon"><svg class="icon"><use href="#i-gate"/></svg></span><span>Power the gates</span><b id="sideGateCount">0 / 10</b></div>
+        <div class="log-line"><span class="log-icon"><svg class="icon"><use href="#i-star"/></svg></span><span>Collect stars & coins</span></div>
+        <div class="log-line"><span class="log-icon"><svg class="icon"><use href="#i-rocket"/></svg></span><span id="sideGoal">Reach the next planet</span></div>
+        <div class="log-divider"></div>
+        <div class="formula-label">Your power formula</div>
+        <div class="formula" id="sideFormula"><span>Subject</span><i>+</i><span>am / is / are</span><i>+</i><span>verb-ing</span></div>
+      </section>
+      <section class="field-note">
+        <div class="note-label"><svg class="icon"><use href="#i-book"/></svg> CADET FIELD NOTE</div>
+        <h4 id="noteHeading">Happening right now!</h4>
+        <p id="noteText">She is <b>playing</b> tennis now.<br><b>play + ing → playing</b><br>Look for “now” and “at the moment”.</p>
+        <div class="note-source" id="noteSource">FROM YOUR FORM 3 WORKSHEET · EXERCISE 2</div>
+      </section>
+    </aside>
+  </main>
+
+  <section class="mission-progress" aria-label="Total mission progress">
+    <div class="progress-text"><svg class="icon"><use href="#i-flag"/></svg><span><strong id="completedValue">0 of 20</strong> gates powered</span></div>
+    <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="20" aria-valuenow="0" id="progressTrack"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="progress-percent" id="progressPercent">0%</span>
+    <span class="progress-note">LITTLE STEPS. STELLAR PROGRESS.</span>
+  </section>
+</div>
+
+<div class="modal-layer" id="quizModal" role="dialog" aria-modal="true" aria-labelledby="questionTitle" hidden>
+  <section class="dialog quiz-dialog">
+    <div class="dialog-top">
+      <span class="mission-badge"><svg class="icon"><use href="#i-gate"/></svg><span id="quizBadge">GATE 01 · AFFIRMATIVE PLANET</span></span>
+      <button class="close-button" id="closeQuizButton" aria-label="Return to exploring"><svg class="icon"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="source-label" id="quizSource">Worksheet · Exercise 2 · Question 1</div>
+    <h2 id="questionTitle">Power up the gate.</h2>
+    <p class="quiz-instruction" id="quizInstruction">Correct the verb in brackets.</p>
+    <div class="sentence-panel" id="sentencePanel"></div>
+    <div id="answerArea"></div>
+    <div class="feedback" id="feedback" role="status" aria-live="polite" hidden></div>
+    <div class="quiz-footer">
+      <div class="reward-note"><svg class="icon"><use href="#i-star"/></svg>+100 points · +1 star<small>First-try bonus: +25 points</small></div>
+      <button class="primary-button" id="checkButton" disabled><span>Check answer</span><svg class="icon"><use href="#i-arrow"/></svg></button>
+    </div>
+  </section>
+</div>
+
+<div class="modal-layer" id="travelModal" role="dialog" aria-modal="true" aria-labelledby="travelTitle" hidden>
+  <section class="dialog center-dialog">
+    <div class="travel-orbit"><span class="planet-icon coral" id="travelPlanet"></span><span class="travel-rocket"><svg class="icon"><use href="#i-rocket"/></svg></span></div>
+    <div class="eyebrow">GATES REPAIRED. NEXT STOP…</div>
+    <h2 id="travelTitle">Negative Planet</h2>
+    <p id="travelDescription"></p>
+    <div class="refill-note"><svg class="icon"><use href="#i-heart"/></svg> Your three hearts refill on arrival.</div>
+    <button class="primary-button" id="landButton">Land on the planet <svg class="icon"><use href="#i-arrow"/></svg></button>
+  </section>
+</div>
+
+<div class="modal-layer" id="pauseModal" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" hidden>
+  <section class="dialog center-dialog">
+    <div class="big-emblem"><svg class="icon"><use href="#i-pause"/></svg></div>
+    <div class="eyebrow">TAKE A LITTLE SPACE BREAK</div>
+    <h2 id="pauseTitle">Mission on hold.</h2>
+    <p>The galaxy can wait. Your astronaut and all your progress are right where you left them.</p>
+    <button class="primary-button" id="resumeButton">Back to the adventure <svg class="icon"><use href="#i-arrow"/></svg></button>
+    <button class="secondary-button" id="restartPauseButton">Restart the whole mission</button>
+  </section>
+</div>
+
+<div class="modal-layer" id="overModal" role="dialog" aria-modal="true" aria-labelledby="overTitle" hidden>
+  <section class="dialog center-dialog">
+    <div class="big-emblem"><svg class="icon"><use href="#i-heart"/></svg></div>
+    <div class="eyebrow">EVERY EXPLORER LEARNS ALONG THE WAY</div>
+    <h2 id="overTitle">Back to base, cadet!</h2>
+    <p>You used your three hearts. That’s okay! Your completed planets are saved. Refill your hearts and give this planet another try.</p>
+    <div class="guide-rule" id="overRecap">Remember: subject + am / is / are + verb-ing.</div>
+    <button class="primary-button" id="retryButton">Refill & retry this planet <svg class="icon"><use href="#i-heart"/></svg></button>
+    <button class="secondary-button" id="restartOverButton">Start a brand-new mission</button>
+  </section>
+</div>
+
+<div class="modal-layer" id="winModal" role="dialog" aria-modal="true" aria-labelledby="winTitle" hidden>
+  <section class="dialog center-dialog">
+    <div class="confetti-wrap" id="confetti" aria-hidden="true"></div>
+    <svg class="result-art" aria-hidden="true"><use href="#alien-art"/></svg>
+    <div class="eyebrow">THE GRAMMAR GALAXY IS SHINING AGAIN</div>
+    <h2 class="victory-title" id="winTitle">MISSION COMPLETE!</h2>
+    <p>You powered all 20 gates, mastered your worksheet missions, and made a new alien friend. Stellar work, cadet!</p>
+    <div class="result-stats">
+      <div class="result-stat"><svg class="icon"><use href="#i-rocket"/></svg><strong id="finalScore">0</strong><span>Final score</span></div>
+      <div class="result-stat"><svg class="icon"><use href="#i-star"/></svg><strong id="finalStars">0</strong><span>Stars collected</span></div>
+      <div class="result-stat"><svg class="icon"><use href="#i-coin"/></svg><strong id="finalCoins">0</strong><span>Space coins</span></div>
+    </div>
+    <p class="best-note" id="bestNote">Personal best: 0</p>
+    <button class="primary-button" id="playAgainButton">Explore again <svg class="icon"><use href="#i-rocket"/></svg></button>
+    <button class="secondary-button" id="victoryNotesButton"><svg class="icon"><use href="#i-book"/></svg>Your grammar field notes</button>
+  </section>
+</div>
+
+<div class="modal-layer" id="helpModal" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden>
+  <section class="dialog help-dialog">
+    <div class="dialog-top"><h2 id="helpTitle">Your mission guide</h2><button class="close-button" id="closeHelpButton" aria-label="Close mission guide"><svg class="icon"><use href="#i-close"/></svg></button></div>
+    <div class="help-tabs" role="tablist" aria-label="Mission guide sections">
+      <button class="help-tab active" data-tab="flight" role="tab" aria-selected="true" aria-controls="flightPanel">Flight manual</button>
+      <button class="help-tab" data-tab="grammar" role="tab" aria-selected="false" aria-controls="grammarPanel">Grammar notes</button>
+      <button class="help-tab" data-tab="source" role="tab" aria-selected="false" aria-controls="sourcePanel">Your worksheet</button>
+    </div>
+    <div class="help-panel" id="flightPanel" role="tabpanel">
+      <h3>Welcome to the Grammar Galaxy.</h3>
+      <p>Walk across the moon platforms, collect space coins and stars, and reach the glowing grammar gates. Correct answers open the way to your rocket!</p>
+      <div class="control-row"><kbd>←</kbd><kbd>→</kbd><span>Move left / right · or use A / D</span></div>
+      <div class="control-row"><kbd>SPACE</kbd><span>Jump · press again in the air for a jetpack boost</span></div>
+      <div class="control-row"><kbd>E</kbd><span>Answer at a nearby gate / board your rocket</span></div>
+      <div class="control-row"><kbd>ESC</kbd><span>Pause, or close a question to keep exploring</span></div>
+      <p>On a phone or tablet, use the on-screen arrows and jump button. Tap <b>Power this gate</b> when you get close.</p>
+      <h3>Little wins add up.</h3>
+      <ul>
+        <li>A correct answer earns <b>100 points + 1 star</b>. Get it right on your first try for <b>25 extra points</b>.</li>
+        <li>Space coins earn <b>10 points</b>. A floating sky star earns <b>50 points</b>.</li>
+        <li>A wrong answer uses one heart. Read the explanation and try again.</li>
+        <li>Each new planet refills your three hearts. If you run out, you can retry that planet; completed planets stay saved for this mission.</li>
+        <li>Falling is safe: your jetpack returns you to a checkpoint without using a heart. There is no timer.</li>
+      </ul>
+    </div>
+    <div class="help-panel" id="grammarPanel" role="tabpanel" hidden>
+      <h3>Actions happening now</h3>
+      <div class="guide-rule"><strong>AFFIRMATIVE POWER</strong>Subject + am / is / are + verb-ing<small>She is playing tennis now.<br>They are watching TV at the moment.<br>I am reading a story now.</small></div>
+      <p><b>I → am</b> · <b>he / she / it → is</b> · <b>you / we / they → are</b></p>
+      <div class="guide-rule"><strong>NEGATIVE POWER · EXTRA PRACTICE</strong>Subject + am / is / are + not + verb-ing<small>She is not playing tennis now.<br>They are not watching TV at the moment.<br>I am not reading a story now.</small></div>
+      <p>Put <b>not after am, is or are</b>. You can shorten <b>is not → isn’t</b> and <b>are not → aren’t</b>. Keep the verb’s <b>-ing</b> ending.</p>
+      <h3>Two special spellings from your worksheet</h3>
+      <div class="guide-rule">write → writing<small>Drop the final e, then add -ing.</small></div>
+      <div class="guide-rule">run → running<small>Double the final n, then add -ing.</small></div>
+      <p><b>fly → flying</b>: keep the y and add -ing.</p>
+      <h3>Put your sentence in orbit</h3>
+      <p>Start with the subject, then <b>am / is / are</b>, then the <b>-ing</b> action. Add the rest of the sentence.</p>
+      <div class="guide-rule">Sara + is + reading + a book + now.</div>
+    </div>
+    <div class="help-panel" id="sourcePanel" role="tabpanel" hidden>
+      <p class="source-disclosure">This adventure uses all <b>10 verb questions</b> and <b>4 rearranging prompts</b> from your uploaded Form 3 worksheet, page 32. The page has <b>no negative exercise</b>, so Negative Planet adds just three negative versions of its original sentences. The friendly alien reviews earlier material.</p>
+      <div class="worksheet-paper">
+        <div class="paper-title">FORM 3</div>
+        <h4>2- Correct the verbs in brackets:</h4>
+        <ol>
+          <li>She is ................ (play) tennis now.</li>
+          <li>They are ................ (watch) TV at the moment.</li>
+          <li>I am ................ (read) a story now.</li>
+          <li>Ali is ................ (eat) his lunch now.</li>
+          <li>We are ................ (do) our homework now.</li>
+          <li>Look! The bird is ................ (fly) in the sky.</li>
+          <li>My mother is ................ (cook) dinner at the moment.</li>
+          <li>You are ................ (write) your lesson now.</li>
+          <li>The children are ................ (run) in the playground now.</li>
+          <li>The cat is ................ (sleep) on the sofa now.</li>
+        </ol>
+        <h4>3) Rearrange the following sentences:</h4>
+        <ol>
+          <li>now / is / Sara / reading / a book.</li>
+          <li>football / are / playing / The boys / now.</li>
+          <li>cooking / My mother / is / dinner.</li>
+          <li>am / I / my homework / doing / now.</li>
+        </ol>
+        <div class="paper-page">32</div>
+      </div>
+      <details class="answer-key"><summary>Open the worksheet answer key</summary>
+        <p><b>Exercise 2:</b> 1. playing · 2. watching · 3. reading · 4. eating · 5. doing · 6. flying · 7. cooking · 8. writing · 9. running · 10. sleeping</p>
+        <p><b>Exercise 3:</b><br>1. Sara is reading a book now.<br>2. The boys are playing football now.<br>3. My mother is cooking dinner.<br>4. I am doing my homework now.</p>
+      </details>
+    </div>
+  </section>
+</div>
+
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const canvas = $('gameCanvas'), ctx = canvas.getContext('2d');
+const stage = $('stage');
+const H = 540, GROUND = 431, SEGMENT = 560;
+let W = 930, scale = 1, dpr = 1;
+let state = 'start', levelIndex = 0, time = 0, lastTime = 0;
+let camera = 0, world, player, checkpoint = 75, particles = [];
+let stats = {score:0, stars:0, coins:0, lives:3, completed:0};
+let levelStartStats = {...stats};
+let missionWon = false, best = 0, soundOn = true;
+let helpReturnState = 'start', helpPreviousFocus = null;
+let currentGate = null, selectedChoice = -1, selectedTiles = [], inputValue = '';
+let quizLocked = false, answerResult = null;
+let toastTimer = 0, interactionKey = '', rescueTimer = 0;
+let audioContext = null, masterGain = null;
+const keyboard = {left:false,right:false}, touch = {left:false,right:false};
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+try {
+  best = Number(localStorage.getItem('grammar-galaxy-best')) || 0;
+  soundOn = localStorage.getItem('grammar-galaxy-sound') !== 'off';
+} catch(e) {}
+
+const spelling = {
+ play:['playing','Keep “is” and add -ing to play: play → playing.'],
+ watch:['watching','Add -ing to watch: watch → watching. “They” goes with “are”.'],
+ read:['reading','Add -ing to read: read → reading. “I” goes with “am”.'],
+ eat:['eating','Add -ing to eat: eat → eating. Ali is one person, so we use “is”.'],
+ do:['doing','Add -ing to do: do → doing. Keep “are” after “we”.'],
+ fly:['flying','Keep the y and add -ing: fly → flying. The bird is flying now.'],
+ cook:['cooking','Add -ing to cook: cook → cooking. “At the moment” means now.'],
+ write:['writing','Drop the final e before adding -ing: write → writing, not writeing.'],
+ run:['running','Double the final n before adding -ing: run → running, not runing.'],
+ sleep:['sleeping','Add -ing to sleep: sleep → sleeping. The cat is sleeping now.']
+};
+function verbQuestion(n,before,verb,after,kind,options) {
+ return {kind,before,after,verb,answer:spelling[verb][0],options,
+  source:`Worksheet · Exercise 2 · Question ${n}`,
+  instruction:kind==='fill'?'Correct the verb in brackets. Type only the missing word.':'Correct the verb in brackets. Choose the missing word.',
+  title:'Power up the gate.', explanation:spelling[verb][1],
+  full:before+spelling[verb][0]+after};
+}
+const affirmative = [
+ verbQuestion(1,'She is ','play',' tennis now.','choice',['playing','play','plays']),
+ verbQuestion(2,'They are ','watch',' TV at the moment.','fill'),
+ verbQuestion(3,'I am ','read',' a story now.','choice',['reading','read','reads']),
+ verbQuestion(4,'Ali is ','eat',' his lunch now.','fill'),
+ verbQuestion(5,'We are ','do',' our homework now.','choice',['doing','do','does']),
+ verbQuestion(6,'Look! The bird is ','fly',' in the sky.','choice',['flying','fly','flies']),
+ verbQuestion(7,'My mother is ','cook',' dinner at the moment.','fill'),
+ verbQuestion(8,'You are ','write',' your lesson now.','choice',['writing','writeing','writes']),
+ verbQuestion(9,'The children are ','run',' in the playground now.','fill'),
+ verbQuestion(10,'The cat is ','sleep',' on the sofa now.','choice',['sleeping','sleep','sleeps'])
+];
+const negative = [
+ {kind:'choice',before:'She is ',after:' tennis now.',verb:'play',answer:'not playing',
+  options:['not playing','playing not','not play'],
+  source:'Negative extension · Based on Exercise 2, Question 1',
+  title:'Add a little “not” power.',
+  instruction:'Make the worksheet sentence negative. Choose the missing words.',
+  explanation:'Put not after is, and keep the -ing verb: She is not playing tennis now.',
+  full:'She is not playing tennis now.'},
+ {kind:'choice',before:'They ',after:' TV at the moment.',verb:'watch',answer:"aren't watching",
+  options:["aren't watching","isn't watching","aren't watch"],
+  source:'Negative extension · Based on Exercise 2, Question 2',
+  title:'Negative power, shorter form.',
+  instruction:'Make it negative. Use the short form of “are not”.',
+  explanation:'They goes with are. Are not becomes aren’t. Keep the -ing form: They aren’t watching TV at the moment.',
+  full:"They aren't watching TV at the moment."},
+ {kind:'fill',before:'I am ',after:' a story now.',verb:'read',answer:'not reading',
+  source:'Negative extension · Based on Exercise 2, Question 3',
+  title:'You’ve got the “not” power.',
+  instruction:'Make it negative. Type not + the -ing form of the verb.',
+  explanation:'Put not after am, then use reading: I am not reading a story now.',
+  full:'I am not reading a story now.'}
+];
+function orderQuestion(n,words,answer,accept) {
+ return {kind:'order',words,answer,full:answer,
+  accept:[answer,...(accept||[])],source:`Worksheet · Exercise 3 · Sentence ${n}`,
+  title:'Put the words in orbit.',
+  instruction:'Rearrange the following sentence. Tap the tiles in the right order.',
+  explanation:`A clear order is subject + am/is/are + verb-ing + the rest: ${answer}`};
+}
+const rearranging = [
+ orderQuestion(1,['now','is','Sara','reading','a book'],'Sara is reading a book now.',
+  ['Now Sara is reading a book.','Sara is now reading a book.']),
+ orderQuestion(2,['football','are','playing','The boys','now'],'The boys are playing football now.',
+  ['Now the boys are playing football.','The boys are now playing football.']),
+ orderQuestion(3,['cooking','My mother','is','dinner'],'My mother is cooking dinner.'),
+ orderQuestion(4,['am','I','my homework','doing','now'],'I am doing my homework now.',
+  ['Now I am doing my homework.','I am now doing my homework.'])
+];
+const boss = [
+ {...affirmative[7],kind:'fill',options:undefined,title:'The alien’s spelling test.',
+  instruction:'The Grammar Alien asks: can you write the correct -ing form?',
+  source:'Alien review · Worksheet, Exercise 2, Question 8'},
+ {...negative[1],title:'The alien’s negative test.',
+  source:'Alien review · Negative extension of Exercise 2, Question 2'},
+ {...rearranging[3],title:'One last sentence, space friend!',
+  source:'Alien review · Worksheet, Exercise 3, Sentence 4'}
+];
+const levels = [
+ {name:'Affirmative Planet',short:'AFFIRMATIVE PLANET',questions:affirmative,color:'#b7a4ff',surface:'#9adfcf',rock:'#293655',planetClass:'',
+  description:'Explore the platforms and repair the gates. Every correct verb brings the galaxy back to life.',
+  noteHeading:'Happening right now!',note:'She is <b>playing</b> tennis now.<br><b>play + ing → playing</b><br>Look for “now” and “at the moment”.',source:'FROM YOUR FORM 3 WORKSHEET · EXERCISE 2'},
+ {name:'Negative Planet',short:'NEGATIVE PLANET',questions:negative,color:'#ffb49e',surface:'#eaa7b3',rock:'#42334e',planetClass:'coral',
+  description:'Add negative power to three sentences from your worksheet. A little “not” makes a big difference.',
+  noteHeading:'A small practice extension',note:'She is <b>not playing</b> tennis now.<br>Add <b>not</b> after am, is or are.<br><b>are not → aren’t</b>',source:'3 NEGATIVE VERSIONS OF WORKSHEET SENTENCES'},
+ {name:'Space Challenge',short:'SPACE CHALLENGE',questions:rearranging,color:'#8ae3e7',surface:'#7bd7dc',rock:'#233e52',planetClass:'cyan',
+  description:'Follow the word trails from Exercise 3. Put every sentence back together to open the space gates.',
+  noteHeading:'Every word has a place.',note:'<b>Sara + is + reading</b><br>+ a book + now.<br>Start with who, then the action.',source:'FROM YOUR FORM 3 WORKSHEET · EXERCISE 3'},
+ {name:'The Grammar Alien',short:'FRIENDLY FINAL BOSS',questions:boss,color:'#ffdc8c',surface:'#d8d29b',rock:'#393c51',planetClass:'gold',
+  description:'Our friendly Grammar Alien has three final tests. Use everything you’ve learned to light up the galaxy.',
+  noteHeading:'Remember your star spellings',note:'<b>write → writing</b><br>Drop the final e.<br><b>run → running</b><br>Double the final n.',source:'FINAL REVIEW · YOUR WORKSHEET GRAMMAR'}
+];
+const TOTAL = levels.reduce((sum,l)=>sum+l.questions.length,0);
+const skyStars = Array.from({length:115},(_,i)=>({
+ x:((i*0.61803398875)%1),y:((i*0.381966+0.12)%1),
+ r:i%9===0?1.8:i%3===0?1.15:.65, phase:i*.91
+}));
+
+function escapeHTML(str) {
+ return String(str).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function normalize(s) {
+ return s.toLowerCase().replace(/[‘’]/g,"'").replace(/[.,!?;:]/g,'').replace(/\s+/g,' ').trim();
+}
+function shuffle(a) {
+ const b=[...a]; for(let i=b.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];} return b;
+}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function clearInput(){
+ keyboard.left=keyboard.right=touch.left=touch.right=false;
+ document.querySelectorAll('.touch-button').forEach(b=>b.classList.remove('pressed'));
+ if(player)player.vx=0;
+}
+function setState(next){
+ state=next;
+ $('pauseButton').disabled=!(state==='playing'||state==='paused');
+ $('touchControls').hidden=state!=='playing';
+ if(state!=='playing'){clearInput();$('interactWrap').hidden=true;interactionKey='';}
+}
+function focusCanvas(){canvas.focus({preventScroll:true});}
+function closeAllModals(){
+ ['quizModal','travelModal','pauseModal','overModal','winModal','helpModal'].forEach(id=>$(id).hidden=true);
+}
+function showToast(text,positive=false,duration=3600){
+ clearTimeout(toastTimer);$('toast').textContent=text;
+ $('toast').className='toast show'+(positive?' positive':'');
+ toastTimer=setTimeout(()=>$('toast').classList.remove('show'),duration);
+}
+function bump(el){
+ el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump');
+ setTimeout(()=>el.classList.remove('bump'),380);
+}
+function updateHUD(){
+ [['scoreValue',String(stats.score).padStart(4,'0')],['starValue',String(stats.stars).padStart(2,'0')],['coinValue',String(stats.coins).padStart(2,'0')]].forEach(([id,val])=>{
+  const el=$(id);if(el.textContent!==val){el.textContent=val;bump(el);}
+ });
+ [...$('hearts').children].forEach((el,i)=>el.classList.toggle('empty',i>=stats.lives));
+ $('hearts').setAttribute('aria-label',`${stats.lives} lives remaining`);
+ const level=levels[levelIndex], done=world?world.gates.filter(g=>g.solved).length:0;
+ document.documentElement.style.setProperty('--planet',level.color);
+ $('completedValue').textContent=`${stats.completed} of ${TOTAL}`;
+ $('progressFill').style.width=(stats.completed/TOTAL*100)+'%';
+ $('progressPercent').textContent=Math.round(stats.completed/TOTAL*100)+'%';
+ $('progressTrack').setAttribute('aria-valuenow',stats.completed);
+ $('progressTrack').setAttribute('aria-valuemax',TOTAL);
+ $('sectorLabel').textContent=levelIndex===3?'FINAL SECTOR · FRIENDSHIP MISSION':`SECTOR 0${levelIndex+1} · EXPLORATION`;
+ $('locationLabel').textContent=level.name;
+ $('gateCount').textContent=`${done} / ${level.questions.length} gates powered`;
+ $('sidePlanet').className='planet-icon '+level.planetClass;
+ $('sideSector').textContent=state==='start'?'FIRST STOP':levelIndex===3?'FINAL STOP':`SECTOR 0${levelIndex+1}`;
+ $('sideTitle').textContent=level.name;
+ $('sideDescription').textContent=done===level.questions.length?(levelIndex===3?'All three tests passed! Meet the alien at the friendship dock to finish your mission.':'All gates are shining! Reach your rocket and board it to travel to the next planet.'):level.description;
+ $('sideGateCount').textContent=`${done} / ${level.questions.length}`;
+ $('sideGoal').textContent=levelIndex===3?'Meet your new alien friend':'Reach the next planet';
+ $('sideFormula').innerHTML='<span>Subject</span><i>+</i><span>am / is / are</span><i>+</i>'+(levelIndex===1?'<span>not</span><i>+</i>':'')+'<span>verb-ing</span>';
+ $('noteHeading').textContent=level.noteHeading;$('noteText').innerHTML=level.note;$('noteSource').textContent=level.source;
+ document.querySelectorAll('.route-stop').forEach((el,i)=>{
+  const isDone=missionWon||i<levelIndex;
+  el.classList.toggle('done',isDone);el.classList.toggle('active',i===levelIndex&&!missionWon);
+  el.querySelector('.route-status use').setAttribute('href',isDone?'#i-check':i===levelIndex?'#i-flag':'#i-lock');
+  if(i===levelIndex)el.setAttribute('aria-current','step');else el.removeAttribute('aria-current');
+ });
+}
+
+function initAudio(){
+ if(!soundOn)return;
+ try{
+  if(!audioContext){
+   audioContext=new (window.AudioContext||window.webkitAudioContext)();
+   masterGain=audioContext.createGain();masterGain.gain.value=.4;masterGain.connect(audioContext.destination);
+  }
+  if(audioContext.state==='suspended')audioContext.resume().catch(()=>{});
+ }catch(e){}
+}
+function tone(freq,end,duration,type='sine',delay=0,volume=.12){
+ if(!soundOn||!audioContext||!masterGain)return;
+ try{
+  const t=audioContext.currentTime+delay, osc=audioContext.createOscillator(), gain=audioContext.createGain();
+  osc.type=type;osc.frequency.setValueAtTime(freq,t);osc.frequency.exponentialRampToValueAtTime(Math.max(20,end),t+duration);
+  gain.gain.setValueAtTime(0,t);gain.gain.linearRampToValueAtTime(volume,t+.009);gain.gain.exponentialRampToValueAtTime(.001,t+duration);
+  osc.connect(gain);gain.connect(masterGain);osc.start(t);osc.stop(t+duration+.025);
+ }catch(e){}
+}
+function sound(type){
+ if(!soundOn)return;
+ if(type==='jump')tone(235,510,.16,'triangle',0,.08);
+ if(type==='coin'){tone(830,1050,.1);tone(1250,1500,.13,'sine',.08,.08);}
+ if(type==='star'){[659,880,1319].forEach((f,i)=>tone(f,f,.23,'sine',i*.065,.09));}
+ if(type==='correct'||type==='launch'){[523,659,784,1046].forEach((f,i)=>tone(f,f,.28,'triangle',i*.09,.10));}
+ if(type==='wrong'){tone(250,130,.23,'triangle',0,.15);tone(170,95,.25,'sine',.14,.09);}
+ if(type==='tap')tone(510,650,.07,'sine',0,.045);
+ if(type==='rescue')tone(230,900,.3,'sine',0,.07);
+ if(type==='win'){[523,659,784,1046,784,1046,1319].forEach((f,i)=>tone(f,f,.38,'triangle',i*.13,.1));}
+}
+function updateSoundButton(){
+ $('soundOnIcon').hidden=!soundOn;$('soundOffIcon').hidden=soundOn;
+ $('soundButton').title=soundOn?'Turn sound off':'Turn sound on';
+ $('soundButton').setAttribute('aria-label',$('soundButton').title);
+ $('soundButton').setAttribute('aria-pressed',String(soundOn));
+ if(masterGain)masterGain.gain.value=soundOn?.4:0;
+}
+
+function prepareWorld(index){
+ const level=levels[index],n=level.questions.length;
+ world={platforms:[],gates:[],collectibles:[],width:n*SEGMENT+620,exitX:n*SEGMENT+285};
+ for(let i=0;i<n;i++){
+  const b=i*SEGMENT;
+  world.platforms.push({x:b,y:GROUND,w:323,ground:true});
+  world.platforms.push({x:b+396,y:GROUND,w:164,ground:true});
+  world.platforms.push({x:b+146,y:GROUND-100,w:110,ground:false});
+  world.platforms.push({x:b+287,y:GROUND-158,w:100,ground:false});
+  world.gates.push({x:b+491,q:level.questions[i],index:i,solved:false,attempts:0,wrongChoices:new Set(),options:level.questions[i].options?shuffle(level.questions[i].options):null});
+  [[166,GROUND-37],[215,GROUND-137],[278,GROUND-38],[351,GROUND-58],[425,GROUND-37]].forEach(([x,y],j)=>{
+   world.collectibles.push({x:b+x,y,type:'coin',taken:false,phase:i+j*1.4});
+  });
+  world.collectibles.push({x:b+337,y:GROUND-204,type:'star',taken:false,phase:i+2});
+ }
+ world.platforms.push({x:n*SEGMENT,y:GROUND,w:620,ground:true});
+ player={x:75,y:GROUND,vx:0,vy:0,w:31,h:69,onGround:true,jumps:0,face:1,walk:0};
+ camera=0;checkpoint=75;particles=[];rescueTimer=0;interactionKey='';
+}
+function loadLevel(index){
+ levelIndex=index;levelStartStats={...stats};prepareWorld(index);
+ $('stageHud').hidden=false;
+ setState('playing');updateHUD();focusCanvas();
+ showToast(index===0?'Move →, jump twice, then press E at the glowing gate.':index===3?'The Grammar Alien is friendly. Power three final gates!':`Welcome to ${levels[index].name}! Your hearts are full.`,index>0,4800);
+}
+function startGame(){
+ initAudio();closeAllModals();missionWon=false;
+ stats={score:0,stars:0,coins:0,lives:3,completed:0};
+ $('introCopy').hidden=$('introBubble').hidden=$('introCaption').hidden=true;
+ stage.classList.remove('is-intro');
+ resize();loadLevel(0);sound('launch');
+}
+function retryPlanet(){
+ const snapshot={...levelStartStats,lives:3};
+ closeAllModals();stats=snapshot;loadLevel(levelIndex);sound('launch');
+}
+function jump(){
+ if(state!=='playing'||player.jumps>=2)return;
+ player.vy=player.jumps===0?-540:-490;
+ player.jumps++;player.onGround=false;sound('jump');
+ burst(player.x,player.y,player.jumps===2?'#bba4ff':'#a6efdb',10,80);
+}
+function getInteraction(){
+ if(!world||!player)return null;
+ const gate=world.gates.find(g=>!g.solved);
+ if(gate&&Math.abs(player.x-gate.x)<140&&player.y>GROUND-235&&player.y<GROUND+25)return {type:'gate',gate};
+ if(!gate&&Math.abs(player.x-world.exitX)<132&&player.y>GROUND-180&&player.y<GROUND+25)return {type:'exit'};
+ return null;
+}
+function interact(){
+ if(state!=='playing')return;
+ const target=getInteraction();
+ if(!target){showToast('Get close to a glowing gate or your rocket first.',false,2000);return;}
+ if(target.type==='gate')openQuestion(target.gate);
+ else if(levelIndex<levels.length-1)beginTravel();
+ else winMission();
+}
+function updateInteraction(){
+ if(state!=='playing')return;
+ const target=getInteraction();
+ const key=target?(target.type==='gate'?'g'+target.gate.index:'exit'):'';
+ if(key!==interactionKey){
+  interactionKey=key;$('interactWrap').hidden=!target;
+  if(target)$('interactText').textContent=target.type==='gate'?(levelIndex===3?'Accept the alien’s test':'Power this gate'):(levelIndex===3?'Celebrate with the alien':'Board your rocket');
+ }
+}
+function beginTravel(){
+ setState('travel');sound('launch');
+ const next=levels[levelIndex+1];
+ $('travelTitle').textContent=next.name;
+ $('travelPlanet').className='planet-icon '+next.planetClass;
+ $('travelDescription').textContent=levelIndex===0?
+ 'Your worksheet has affirmative sentences. Now turn three of those same sentences into negatives by adding “not”. A small practice extension, a whole new planet!':
+ levelIndex===1?'Time for Exercise 3! Collect the word tiles and rearrange the worksheet’s four sentences. The space stations are counting on you.':
+ 'Meet the friendly Grammar Alien for three final reviews: an -ing spelling, a negative sentence, and a word trail. You have all the grammar powers you need!';
+ $('landButton').innerHTML=(levelIndex===2?'Meet the Grammar Alien':'Land on the planet')+' <svg class="icon"><use href="#i-arrow"/></svg>';
+ $('travelModal').hidden=false;$('landButton').focus();
+}
+function saveBest(){
+ if(stats.score>best){
+  best=stats.score;
+  try{localStorage.setItem('grammar-galaxy-best',String(best));}catch(e){}
+ }
+}
+function gameOver(){
+ saveBest();$('quizModal').hidden=true;setState('over');
+ $('overRecap').textContent=levelIndex===1?'Negative power: subject + am / is / are + not + verb-ing.':'Remember: subject + am / is / are + verb-ing.';
+ $('overModal').hidden=false;$('retryButton').focus();
+}
+function winMission(){
+ missionWon=true;setState('won');saveBest();sound('win');updateHUD();
+ $('finalScore').textContent=stats.score.toLocaleString();
+ $('finalStars').textContent=stats.stars;$('finalCoins').textContent=stats.coins;
+ $('bestNote').textContent=`Personal best: ${best.toLocaleString()} points · Present Continuous Explorer`;
+ $('confetti').innerHTML='';
+ if(!reducedMotion){
+  const colors=['#a6f1d2','#b7a4ff','#ffcf75','#ff91aa','#8ae3e7'];
+  for(let i=0;i<35;i++){
+   const el=document.createElement('span');el.className='confetti-piece';
+   el.style.left=Math.random()*100+'%';el.style.background=colors[i%colors.length];
+   el.style.animationDelay=(-Math.random()*6)+'s';el.style.animationDuration=4+Math.random()*4+'s';
+   $('confetti').appendChild(el);
+  }
+ }
+ $('winModal').hidden=false;$('playAgainButton').focus();
+}
+function togglePause(){
+ if(state==='playing'){$('pauseModal').hidden=false;setState('paused');$('resumeButton').focus();}
+ else if(state==='paused'){$('pauseModal').hidden=true;setState('playing');focusCanvas();}
+}
+
+function openQuestion(gate){
+ if(gate.solved)return;
+ currentGate=gate;selectedChoice=-1;selectedTiles=[];inputValue='';quizLocked=false;answerResult=null;
+ setState('question');sound('tap');
+ $('quizBadge').textContent=`GATE ${String(gate.index+1).padStart(2,'0')} · ${levels[levelIndex].short}`;
+ $('quizSource').textContent=gate.q.source;
+ $('questionTitle').textContent=gate.q.title;
+ $('quizInstruction').textContent=gate.q.instruction;
+ $('feedback').hidden=true;$('quizModal').hidden=false;
+ renderSentence(false);renderAnswers();updateCheckButton();
+ setTimeout(()=>{
+  if(state!=='question')return;
+  const focus=$('answerArea').querySelector('input,button:not(:disabled)');
+  if(focus)focus.focus({preventScroll:true});
+ },60);
+}
+function renderSentence(solved){
+ const q=currentGate.q;
+ if(q.kind==='order'){
+  $('sentencePanel').innerHTML='<div class="order-origin"><small>'+(solved?'SENTENCE RESTORED':'WORKSHEET WORD TRAIL')+'</small>'+escapeHTML(solved?q.full:q.words.join(' / ')+'.')+'</div>';
+ }else{
+  $('sentencePanel').innerHTML=escapeHTML(q.before)+'<span class="gap'+(solved?' solved':'')+'">'+(solved?escapeHTML(q.answer):'········')+'</span> '+(!solved?'<span class="given-verb">('+escapeHTML(q.verb)+')</span>':'')+escapeHTML(q.after);
+ }
+}
+function renderAnswers(){
+ const q=currentGate.q, area=$('answerArea');
+ area.innerHTML='';
+ if(q.kind==='choice'){
+  const options=document.createElement('div');
+  options.className='answer-options'+(currentGate.options.some(o=>o.length>12)?' long-options':'');
+  currentGate.options.forEach((option,i)=>{
+   const btn=document.createElement('button');btn.className='answer-choice';
+   if(i===selectedChoice)btn.classList.add('selected');
+   if(currentGate.wrongChoices.has(i)&&!quizLocked){btn.classList.add('disabled-wrong');btn.disabled=true;}
+   if(quizLocked){
+    btn.disabled=true;
+    if(i===selectedChoice)btn.classList.add(answerResult==='correct'?'correct':'incorrect');
+   }
+   btn.setAttribute('aria-pressed',String(i===selectedChoice));
+   btn.innerHTML='<span class="choice-number">'+(i+1)+'</span>'+escapeHTML(option);
+   btn.addEventListener('click',()=>selectChoice(i));
+   options.appendChild(btn);
+  });
+  area.appendChild(options);
+ }else if(q.kind==='fill'){
+  const label=document.createElement('label');label.className='fill-label';label.htmlFor='answerInput';
+  label.textContent=q.answer.includes(' ')?'Type the missing words:':'Type the missing verb:';
+  const input=document.createElement('input');input.id='answerInput';input.className='answer-input';input.type='text';
+  input.placeholder=q.answer.includes(' ')?'not + verb-ing':'Your -ing verb…';input.autocomplete='off';
+  input.autocapitalize='none';input.spellcheck=false;input.maxLength=70;input.value=inputValue;input.disabled=quizLocked;
+  input.addEventListener('input',()=>{inputValue=input.value;updateCheckButton();});
+  area.append(label,input);
+ }else{
+  const tray=document.createElement('div');tray.className='answer-tray';tray.setAttribute('aria-label','Your sentence');
+  if(!selectedTiles.length){const p=document.createElement('span');p.className='tray-placeholder';p.textContent='Tap the words to build your sentence…';tray.appendChild(p);}
+  selectedTiles.forEach((wordIndex,position)=>{
+   const b=document.createElement('button');b.className='word-chip chosen';b.textContent=q.words[wordIndex];b.disabled=quizLocked;
+   b.setAttribute('aria-label','Remove '+q.words[wordIndex]+' from the sentence');
+   b.addEventListener('click',()=>{selectedTiles.splice(position,1);sound('tap');renderAnswers();updateCheckButton();});
+   tray.appendChild(b);
+  });
+  const bank=document.createElement('div');bank.className='word-bank';bank.setAttribute('aria-label','Available word tiles');
+  q.words.forEach((word,i)=>{
+   const b=document.createElement('button');b.className='word-chip'+(selectedTiles.includes(i)?' used':'');b.textContent=word;
+   b.disabled=quizLocked||selectedTiles.includes(i);
+   b.addEventListener('click',()=>{selectedTiles.push(i);sound('tap');renderAnswers();updateCheckButton();});
+   bank.appendChild(b);
+  });
+  const tools=document.createElement('div');tools.className='tile-tools';
+  const hint=document.createElement('span');hint.textContent='Tap a chosen tile to put it back.';
+  const clear=document.createElement('button');clear.className='link-button';clear.textContent='Clear sentence';clear.disabled=quizLocked;
+  clear.addEventListener('click',()=>{selectedTiles=[];renderAnswers();updateCheckButton();});
+  tools.append(hint,clear);area.append(tray,bank,tools);
+ }
+}
+function selectChoice(index){
+ if(quizLocked||currentGate.wrongChoices.has(index))return;
+ selectedChoice=index;sound('tap');renderAnswers();updateCheckButton();
+}
+function updateCheckButton(){
+ if(!currentGate)return;
+ const q=currentGate.q,btn=$('checkButton');
+ if(quizLocked){
+  btn.disabled=false;
+  btn.querySelector('span').textContent=answerResult==='correct'?'Keep exploring':stats.lives===0?'Return to base':'Try again';
+ }else{
+  btn.querySelector('span').textContent='Check answer';
+  btn.disabled=q.kind==='choice'?selectedChoice<0:q.kind==='fill'?!inputValue.trim():selectedTiles.length!==q.words.length;
+ }
+}
+function submitAnswer(){
+ if(state!=='question'||$('checkButton').disabled)return;
+ if(quizLocked){
+  if(answerResult==='correct'){closeQuestion();return;}
+  if(stats.lives===0){gameOver();return;}
+  quizLocked=false;answerResult=null;selectedChoice=-1;$('feedback').hidden=true;
+  renderAnswers();updateCheckButton();
+  const inp=$('answerInput');
+  if(inp){inp.focus();inp.select();}
+  else{const b=$('answerArea').querySelector('button:not(:disabled)');if(b)b.focus();}
+  return;
+ }
+ const q=currentGate.q;
+ const answer=q.kind==='choice'?currentGate.options[selectedChoice]:q.kind==='fill'?inputValue:selectedTiles.map(i=>q.words[i]).join(' ');
+ const correct=(q.accept||[q.answer]).some(a=>normalize(a)===normalize(answer));
+ quizLocked=true;answerResult=correct?'correct':'wrong';
+ let title,text;
+ if(correct){
+  const points=currentGate.attempts===0?125:100;
+  if(!currentGate.solved){
+   currentGate.solved=true;stats.score+=points;stats.stars++;stats.completed++;
+   checkpoint=currentGate.x+80;
+  }
+  title=levelIndex===3?'The alien is impressed!':'Gate unlocked. Stellar work!';
+  text=`+${points} points · +1 star. ${q.explanation}`;
+  sound('correct');renderSentence(true);
+  burst(currentGate.x,GROUND-100,levels[levelIndex].color,40,180);
+ }else{
+  stats.lives=Math.max(0,stats.lives-1);currentGate.attempts++;
+  if(q.kind==='choice')currentGate.wrongChoices.add(selectedChoice);
+  title=stats.lives?'Almost! Let’s look at the rule.':'No hearts left — but you can try again.';
+  text=q.explanation+' '+(stats.lives?`${stats.lives} ${stats.lives===1?'heart remains':'hearts remain'}.`:'Refill at base and use this rule on your next attempt.');
+  sound('wrong');bump($('hearts'));
+ }
+ $('feedback').className='feedback'+(correct?'':' wrong');
+ $('feedback').innerHTML='<svg class="icon"><use href="'+(correct?'#i-check':'#i-info')+'"/></svg><div><strong>'+escapeHTML(title)+'</strong><p>'+escapeHTML(text)+'</p></div>';
+ $('feedback').hidden=false;
+ renderAnswers();updateCheckButton();updateHUD();
+ $('checkButton').focus({preventScroll:true});
+ if(window.innerWidth<600)$('feedback').scrollIntoView({block:'nearest',behavior:reducedMotion?'auto':'smooth'});
+}
+function closeQuestion(){
+ if(stats.lives===0){gameOver();return;}
+ $('quizModal').hidden=true;
+ if(currentGate&&currentGate.solved){
+  burst(currentGate.x,GROUND-100,'#a6f1d2',38,150);
+  showToast(world.gates.every(g=>g.solved)?(levelIndex===3?'All tests complete! Meet the alien at the dock →':'All gates powered! Your rocket is waiting →'):'Gate powered! Keep exploring →',true,3300);
+ }
+ setState('playing');currentGate=null;focusCanvas();
+}
+
+function openHelp(tab='flight'){
+ if(state!=='help'){
+  helpReturnState=state;helpPreviousFocus=document.activeElement;setState('help');
+ }
+ setHelpTab(tab);$('helpModal').hidden=false;$('closeHelpButton').focus();
+}
+function setHelpTab(tab){
+ document.querySelectorAll('.help-tab').forEach(btn=>{
+  const active=btn.dataset.tab===tab;btn.classList.toggle('active',active);btn.setAttribute('aria-selected',String(active));
+ });
+ ['flight','grammar','source'].forEach(t=>$(t+'Panel').hidden=t!==tab);
+}
+function closeHelp(){
+ $('helpModal').hidden=true;setState(helpReturnState);
+ if(helpPreviousFocus&&helpPreviousFocus.isConnected)helpPreviousFocus.focus({preventScroll:true});
+ else if(state==='playing')focusCanvas();
+}
+
+function burst(x,y,color,count=12,speed=110){
+ for(let i=0;i<count;i++){
+  const a=Math.random()*Math.PI*2,sp=speed*(.25+Math.random()*.75);
+  particles.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-35,life:.45+Math.random()*.5,maxLife:1,color,r:2+Math.random()*3});
+ }
+}
+function physics(dt){
+ const dir=(keyboard.right||touch.right?1:0)-(keyboard.left||touch.left?1:0);
+ player.vx+=(dir*282-player.vx)*Math.min(1,dt*14);
+ if(Math.abs(player.vx)<.5)player.vx=0;
+ if(dir)player.face=dir;
+ const previousY=player.y;
+ player.x+=player.vx*dt;
+ player.x=clamp(player.x,23,world.width-35);
+ for(const g of world.gates){
+  if(!g.solved&&player.x+player.w/2>g.x-27){
+   player.x=g.x-27-player.w/2;player.vx=0;break;
+  }
+ }
+ player.vy+=1430*dt;player.y+=player.vy*dt;player.onGround=false;
+ if(player.vy>=0){
+  for(const p of world.platforms){
+   if(player.x+player.w*.43>p.x&&player.x-player.w*.43<p.x+p.w&&previousY<=p.y+2&&player.y>=p.y){
+    player.y=p.y;player.vy=0;player.onGround=true;player.jumps=0;break;
+   }
+  }
+ }
+ if(player.onGround&&Math.abs(player.vx)>20)player.walk+=dt*13;
+ else player.walk+=dt*1.5;
+ for(const c of world.collectibles){
+  if(c.taken)continue;
+  if(Math.abs(player.x-c.x)<29&&Math.abs(player.y-player.h*.48-c.y)<43){
+   c.taken=true;
+   if(c.type==='coin'){stats.coins++;stats.score+=10;sound('coin');burst(c.x,c.y,'#ffcf75',7,75);}
+   else{stats.stars++;stats.score+=50;sound('star');burst(c.x,c.y,'#ffe29b',19,110);showToast('Sky star collected! +50 points',true,1700);}
+   updateHUD();
+  }
+ }
+ if(player.y>H+90){
+  player.x=checkpoint;player.y=GROUND-35;player.vx=0;player.vy=0;player.jumps=0;
+  rescueTimer=1.4;sound('rescue');burst(player.x,player.y-20,'#b7a4ff',22,130);
+  showToast('Jetpack rescue! No heart lost. Jump twice to cross the gaps.',false,4000);
+ }
+ rescueTimer=Math.max(0,rescueTimer-dt);
+ const target=clamp(player.x-W*.32,0,Math.max(0,world.width-W));
+ camera+=(target-camera)*Math.min(1,dt*6);
+ updateInteraction();
+}
+function updateParticles(dt){
+ for(const p of particles){p.life-=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=110*dt;}
+ particles=particles.filter(p=>p.life>0);
+}
+
+function resize(){
+ const rect=canvas.getBoundingClientRect();
+ dpr=Math.min(window.devicePixelRatio||1,2);
+ canvas.width=Math.round(rect.width*dpr);canvas.height=Math.round(rect.height*dpr);
+ scale=rect.height/H;W=rect.width/scale;
+}
+function rounded(x,y,w,h,r,fill,stroke=null,lw=1){
+ r=Math.max(0,Math.min(r,w/2,h/2));
+ ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();
+ if(fill){ctx.fillStyle=fill;ctx.fill();}
+ if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke();}
+}
+function circle(x,y,r,fill,stroke=null,lw=1){
+ ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);
+ if(fill){ctx.fillStyle=fill;ctx.fill();}
+ if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke();}
+}
+function ellipse(x,y,rx,ry,fill,stroke=null,lw=1,rotation=0){
+ ctx.beginPath();ctx.ellipse(x,y,Math.max(0,rx),Math.max(0,ry),rotation,0,Math.PI*2);
+ if(fill){ctx.fillStyle=fill;ctx.fill();}
+ if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke();}
+}
+function line(x1,y1,x2,y2,color,width=1){
+ ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineCap='round';ctx.stroke();
+}
+function starPath(x,y,r,inner=r*.47){
+ ctx.beginPath();
+ for(let i=0;i<10;i++){
+  const a=-Math.PI/2+i*Math.PI/5,rr=i%2?inner:r;
+  if(i===0)ctx.moveTo(x+Math.cos(a)*rr,y+Math.sin(a)*rr);else ctx.lineTo(x+Math.cos(a)*rr,y+Math.sin(a)*rr);
+ }
+ ctx.closePath();
+}
+function text(s,x,y,size,color,align='left',weight=700){
+ ctx.font=`${weight} ${size}px "Nunito", sans-serif`;ctx.fillStyle=color;ctx.textAlign=align;ctx.fillText(s,x,y);
+}
+function drawPlanet(x,y,r,index=0,alpha=1){
+ ctx.save();ctx.globalAlpha=alpha;
+ const colors=[['#c5b0f4','#8574bd','#46396d'],['#ffcdb5','#ce8c9c','#734467'],['#b1f3ec','#55b5c6','#34567f'],['#f9e6a5','#bbae72','#66567a']][index];
+ ctx.save();ctx.translate(x,y);ctx.rotate(-.32);
+ ellipse(0,0,r*1.6,r*.31,null,colors[0]+'40',r*.17);
+ ellipse(0,0,r*1.75,r*.35,null,colors[0]+'24',2);
+ ctx.restore();
+ const g=ctx.createRadialGradient(x-r*.35,y-r*.4,r*.08,x+r*.1,y+r*.12,r*1.13);
+ g.addColorStop(0,colors[0]);g.addColorStop(.5,colors[1]);g.addColorStop(1,colors[2]);
+ circle(x,y,r,g);
+ ctx.save();ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.clip();
+ for(let i=0;i<5;i++){
+  ctx.beginPath();ctx.ellipse(x+r*.2,y-r*.6+i*r*.33,r*1.2,r*.17,-.35,0,Math.PI*2);
+  ctx.strokeStyle=i%2?'#ffffff0b':'#20194416';ctx.lineWidth=r*.13;ctx.stroke();
+ }
+ ellipse(x-r*.32,y-r*.34,r*.15,r*.10,'#ffffff16',null,1,-.4);
+ ellipse(x+r*.3,y+r*.30,r*.23,r*.1,'#21163719',null,1,-.4);
+ ctx.restore();
+ ctx.save();ctx.translate(x,y);ctx.rotate(-.32);
+ ctx.beginPath();ctx.ellipse(0,0,r*1.6,r*.31,0,0,Math.PI);ctx.strokeStyle=colors[0]+'9b';ctx.lineWidth=r*.13;ctx.stroke();
+ ctx.beginPath();ctx.ellipse(0,0,r*1.78,r*.36,0,0,Math.PI);ctx.strokeStyle=colors[0]+'3c';ctx.lineWidth=2;ctx.stroke();
+ ctx.restore();ctx.restore();
+}
+function drawBackground(index,cam=0,intro=false){
+ const backgrounds=[['#12172e','#172943'],['#201832','#2a2948'],['#102435','#173a4e'],['#171e33','#34344c']];
+ const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,backgrounds[index][0]);bg.addColorStop(1,backgrounds[index][1]);ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+ const glow=ctx.createRadialGradient(W*.70,H*.36,10,W*.70,H*.36,W*.53);
+ glow.addColorStop(0,['#8971e41c','#dc8b991b','#69cbd51a','#e5b47117'][index]);glow.addColorStop(1,'#00000000');
+ ctx.fillStyle=glow;ctx.fillRect(0,0,W,H);
+ for(const s of skyStars){
+  const x=((s.x*W-cam*.075)%W+W)%W,y=s.y*H*.81;
+  const a=.25+(Math.sin(time*.9+s.phase)+1)*.22;
+  ctx.globalAlpha=intro&&x<W*.47?a*.45:a;
+  circle(x,y,s.r,'#d0dff8');
+  if(s.r>1.5){line(x-4,y,x+4,y,'#d0dff877',.6);line(x,y-4,x,y+4,'#d0dff877',.6);}
+ }
+ ctx.globalAlpha=1;
+ ctx.save();ctx.strokeStyle='#a8a1dd13';ctx.lineWidth=1;ctx.setLineDash([3,8]);
+ ctx.beginPath();ctx.ellipse(W*.73,H*.28,W*.45,H*.35,-.3,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);ctx.restore();
+ if(!intro){
+  drawPlanet(W*.82-cam*.012,125,77,index,.88);
+  drawPlanet(W*.18-cam*.007,108,21,(index+1)%4,.58);
+  circle(W*.49-cam*.009,64,6,'#9acdd655');
+ }
+ ctx.fillStyle=['#212a4855','#3b294957','#25435855','#42435144'][index];
+ ctx.beginPath();ctx.moveTo(0,H);
+ for(let x=-80;x<=W+80;x+=80){ctx.lineTo(x,H-107-Math.sin(x*.009+cam*.0007)*28-Math.cos(x*.019)*15);}
+ ctx.lineTo(W,H);ctx.closePath();ctx.fill();
+ ctx.fillStyle='#0c152532';ctx.beginPath();ctx.moveTo(0,H);
+ for(let x=-60;x<W+90;x+=60)ctx.lineTo(x,H-48-Math.cos(x*.016+cam*.0013)*20);
+ ctx.lineTo(W,H);ctx.closePath();ctx.fill();
+}
+function drawPlatform(p,index=levelIndex){
+ const level=levels[index],bottom=p.ground?H+25:p.y+33;
+ ctx.save();
+ ctx.beginPath();ctx.moveTo(p.x+10,p.y);ctx.lineTo(p.x+p.w-10,p.y);ctx.lineTo(p.x+p.w,p.y+10);ctx.lineTo(p.x+p.w-9,bottom-7);
+ if(!p.ground){ctx.lineTo(p.x+p.w*.67,bottom+9);ctx.lineTo(p.x+p.w*.45,bottom+2);ctx.lineTo(p.x+12,bottom-3);}
+ else ctx.lineTo(p.x,bottom);
+ ctx.lineTo(p.x,p.y+10);ctx.closePath();
+ const g=ctx.createLinearGradient(0,p.y,0,bottom);g.addColorStop(0,level.rock);g.addColorStop(1,'#151d36');
+ ctx.fillStyle=g;ctx.fill();ctx.strokeStyle='#5c648454';ctx.lineWidth=1.4;ctx.stroke();
+ rounded(p.x+2,p.y,p.w-4,9,4,level.surface);
+ line(p.x+12,p.y+3,p.x+p.w-13,p.y+3,'#eeffef60',1);
+ line(p.x+14,p.y+13,p.x+p.w-14,p.y+13,level.surface+'33',2);
+ for(let j=0;j<Math.floor(p.w/35);j++){
+  const xx=p.x+18+j*33,yy=p.y+23+(j*19%47);
+  if(yy<bottom-8)ellipse(xx,yy,3+j%3,1.8,'#72829b2b');
+ }
+ if(!p.ground){
+  ctx.beginPath();ctx.moveTo(p.x+p.w*.47,bottom-2);ctx.lineTo(p.x+p.w*.56,bottom+17);ctx.lineTo(p.x+p.w*.67,bottom-2);ctx.fillStyle='#293650';ctx.fill();
+ }
+ ctx.restore();
+}
+function drawCrystal(x,y,color){
+ ctx.save();ctx.globalAlpha=.82;
+ ctx.beginPath();ctx.moveTo(x-9,y);ctx.lineTo(x-12,y-15);ctx.lineTo(x-6,y-27);ctx.lineTo(x,y-17);ctx.lineTo(x+7,y-34);ctx.lineTo(x+12,y-20);ctx.lineTo(x+8,y);ctx.closePath();
+ ctx.fillStyle=color;ctx.fill();line(x-6,y-23,x-3,y-3,'#ffffff55',1);line(x+7,y-29,x+5,y-5,'#ffffff55',1);
+ ctx.restore();
+}
+function drawCollectible(c){
+ const y=c.y+(reducedMotion?0:Math.sin(time*2.5+c.phase)*4);
+ if(c.type==='coin'){
+  const sx=.7+Math.abs(Math.cos(time*1.8+c.phase))*.3;
+  ctx.save();ctx.translate(c.x,y);ctx.scale(sx,1);
+  ellipse(0,0,10,12,'#e49b53','#a36c47',1.8);ellipse(-1,-1,7.6,9.6,'#ffd780','#ffe8a6',1.1);
+  line(0,-5,0,4,'#c69546',2.5);line(-3,-6,2,-6,'#fff0b799',1);
+  ctx.restore();
+ }else{
+  const glow=ctx.createRadialGradient(c.x,y,2,c.x,y,28);glow.addColorStop(0,'#ffe09a30');glow.addColorStop(1,'#ffe09a00');
+  ctx.fillStyle=glow;ctx.fillRect(c.x-29,y-29,58,58);
+  ctx.save();ctx.translate(c.x,y);ctx.rotate(Math.sin(time*1.3+c.phase)*.12);
+  starPath(0,0,17,8);ctx.fillStyle='#ffdb88';ctx.fill();ctx.strokeStyle='#b08454';ctx.lineWidth=1.6;ctx.stroke();
+  circle(-4,-3,1.1,'#fff4d4');line(-6,0,-2,-8,'#fff3d399',1.5);ctx.restore();
+ }
+}
+function drawGate(g){
+ const x=g.x,y=GROUND,level=levels[levelIndex],col=g.solved?'#a2f0d0':level.color;
+ ctx.save();
+ if(!g.solved){
+  const shield=ctx.createLinearGradient(x-28,0,x+28,0);
+  shield.addColorStop(0,col+'07');shield.addColorStop(.5,col+'18');shield.addColorStop(1,col+'07');
+  ctx.fillStyle=shield;ctx.fillRect(x-27,0,54,y-145);
+  const gl=ctx.createLinearGradient(x-31,y-153,x+31,y);
+  gl.addColorStop(0,col+'38');gl.addColorStop(1,col+'0f');ctx.fillStyle=gl;ctx.fillRect(x-31,y-153,62,153);
+  ctx.save();ctx.beginPath();ctx.rect(x-29,y-152,58,151);ctx.clip();
+  for(let i=0;i<8;i++){
+   const yy=y-((time*32+i*25)%166);line(x-29,yy,x+29,yy,col+'35',1);
+  }
+  for(let i=0;i<4;i++){const xx=x-23+i*15;line(xx,y-143,xx,y-7,col+'25',1);}
+  ctx.restore();
+ }
+ rounded(x-49,y-11,98,14,4,'#3a4362','#8a95b088',1);
+ rounded(x-45,y-152,14,143,4,'#323d5b','#8793ad88',1.5);
+ rounded(x+31,y-152,14,143,4,'#323d5b','#8793ad88',1.5);
+ rounded(x-43,y-160,86,20,6,'#3d4664','#95a0b577',1.5);
+ rounded(x-39,y-155,78,5,2,col);
+ rounded(x-41,y-132,6,105,2,col+'99');
+ rounded(x+35,y-132,6,105,2,col+'99');
+ for(const xx of [x-38,x+38]){
+  circle(xx,y-19,3,col);rounded(xx-5,y-151,10,10,2,'#9ba6bb');line(xx-2,y-147,xx+2,y-147,'#384260',1);
+ }
+ rounded(x-37,y-190,74,23,6,'#101a32dd',col+'55',1);
+ text(g.solved?'POWERED':`GATE ${String(g.index+1).padStart(2,'0')}`,x,y-175,9,g.solved?'#b2f4d9':'#d1d9f0','center',900);
+ if(!g.solved){
+  const bob=reducedMotion?0:Math.sin(time*2)*3;
+  circle(x,y-96+bob,18,'#17203bdb',col+'88',1);
+  if(levelIndex===3){starPath(x,y-96+bob,9,4);ctx.fillStyle=col;ctx.fill();}
+  else if(levelIndex===2){rounded(x-8,y-102+bob,7,5,1,col);rounded(x+2,y-102+bob,7,5,1,col);rounded(x-8,y-94+bob,17,5,1,col);}
+  else text(levelIndex===1?'NOT':'ING',x,y-92+bob,9,col,'center',900);
+ }else{
+  line(x-7,y-108,x-1,y-102,col,3);line(x-1,y-102,x+10,y-116,col,3);
+  circle(x,y-109,21,null,col+'33',1);
+ }
+ ctx.restore();
+}
+function drawAstronaut(x,y,size=1,walking=false,facing=1,air=false,hero=false){
+ ctx.save();ctx.translate(x,y);ctx.scale(size*facing,size);
+ const swing=walking?Math.sin(player.walk)*5:Math.sin(time*2)*.6;
+ if(air||hero){
+  const fl=15+(reducedMotion?0:Math.sin(time*28)*4);
+  ctx.beginPath();ctx.moveTo(-18,-15);ctx.quadraticCurveTo(-26,fl-2,-16,fl+5);ctx.quadraticCurveTo(-9,fl-6,-12,-15);ctx.fillStyle='#ba9afc88';ctx.fill();
+  ctx.beginPath();ctx.moveTo(-17,-13);ctx.quadraticCurveTo(-21,fl-5,-15,fl-1);ctx.quadraticCurveTo(-12,1,-12,-13);ctx.fillStyle='#a2e9f1cc';ctx.fill();
+ }
+ rounded(-25,-43,18,32,6,'#9495bc','#242e4c',2);
+ rounded(-25,-34,5,16,2,'#b3c2d9');
+ line(-8,-19,-10+swing,-5,'#b4bfd9',10);
+ line(8,-19,10-swing,-5,'#d6ddef',10);
+ rounded(-17+swing,-9,14,9,3,'#dce6f7','#303e5a',1.7);
+ rounded(3-swing,-9,14,9,3,'#f0f4ff','#303e5a',1.7);
+ line(-15+swing,-1,-4+swing,-1,'#8396b9',2);line(5-swing,-1,16-swing,-1,'#8396b9',2);
+ rounded(-15,-44,30,29,9,'#e6edf9','#303b58',2);
+ rounded(-11,-19,22,5,2,'#9caacd');
+ line(-15,-37,-21,-23+swing*.6,'#bdcce5',9);circle(-21,-22+swing*.6,5,'#f1f5ff','#49526c',1.6);
+ line(15,-36,21,-25-swing*.7,'#e6edf9',9);circle(21,-24-swing*.7,5,'#fff9f2','#49526c',1.6);
+ rounded(-8,-35,16,12,3,'#a5adc8','#8494b2',1);
+ rounded(-5,-33,10,4,1,'#506787');circle(-4,-26,1.5,'#b3f2d4');circle(1,-26,1.5,'#ffd482');circle(5,-26,1.2,'#d1b5ff');
+ circle(0,-56,22,'#f1f1fa','#2e3a58',2);
+ circle(-21,-54,5,'#a1b4d2','#334160',1.5);circle(21,-54,5,'#dfe8fa','#334160',1.5);circle(22,-54,2.4,'#f2be84');
+ const visor=ctx.createLinearGradient(-11,-68,10,-45);visor.addColorStop(0,'#36587a');visor.addColorStop(1,'#102d48');
+ rounded(-17,-68,34,25,11,visor,'#748ea8',1.3);
+ ctx.save();ctx.globalAlpha=.35;ctx.beginPath();ctx.moveTo(-12,-64);ctx.quadraticCurveTo(-7,-70,4,-65);ctx.lineTo(-5,-46);ctx.lineTo(-14,-50);ctx.closePath();ctx.fillStyle='#b0e8f2';ctx.fill();ctx.restore();
+ ellipse(-6,-55,1.8,2.4,'#bcf6ed');ellipse(7,-55,1.8,2.4,'#bcf6ed');
+ ctx.beginPath();ctx.arc(.5,-52,4,.2,Math.PI-.2);ctx.strokeStyle='#c7f7ef';ctx.lineWidth=1.3;ctx.stroke();
+ line(13,-75,17,-83,'#aebbd1',2);circle(18,-84,3,'#ffcf85','#394663',1);
+ line(-9,-74,-1,-76,'#ffffff',2);
+ ctx.restore();
+}
+function drawAlien(x,y,size=1,waving=false){
+ ctx.save();ctx.translate(x,y);ctx.scale(size,size);
+ ellipse(0,0,32,6,'#06142e44');
+ line(-13,-17,-17,-3,'#a5e5bc',11);line(13,-17,17,-3,'#a5e5bc',11);
+ rounded(-25,-46,50,33,13,'#9e95ce','#354460',2);
+ line(-22,-24,22,-24,'#d0c4ef',5);
+ line(-26,-65,-31,-87,'#77b993',4);line(25,-65,32,-90,'#77b993',4);
+ circle(-32,-90,5,'#e9d893');circle(33,-93,5,'#e9d893');
+ const wy=waving?Math.sin(time*4)*5:0;
+ line(-24,-41,-34,-31,'#a5e5bc',9);line(24,-41,37,-52-wy,'#a5e5bc',9);circle(39,-57-wy,5,'#baf4c9');
+ ellipse(0,-62,35,29,'#b3ecc2','#477866',2);
+ ellipse(-14,-65,10,12,'#f2fff6');ellipse(14,-65,10,12,'#f2fff6');
+ ellipse(-12,-64,5,8,'#233e4b');ellipse(12,-64,5,8,'#233e4b');
+ circle(-10,-67,2,'#fff');circle(14,-67,2,'#fff');
+ ellipse(-24,-51,5,3,'#ecaeb599');ellipse(24,-51,5,3,'#ecaeb599');
+ ctx.beginPath();ctx.moveTo(-7,-48);ctx.quadraticCurveTo(0,-41,7,-48);ctx.strokeStyle='#466e60';ctx.lineWidth=2;ctx.stroke();
+ starPath(0,-35,6,3);ctx.fillStyle='#ffe2a2';ctx.fill();ctx.restore();
+}
+function drawRocket(x,y,size=1,ready=true){
+ ctx.save();ctx.translate(x,y);ctx.scale(size,size);
+ ellipse(0,4,53,10,'#080f2844');
+ rounded(-54,-4,108,11,4,'#485577','#7889a4',1);
+ if(ready){
+  const gl=ctx.createRadialGradient(0,-4,2,0,-4,49);gl.addColorStop(0,'#a3eed229');gl.addColorStop(1,'#a3eed200');
+  ctx.fillStyle=gl;ctx.fillRect(-50,-55,100,100);
+ }
+ ctx.beginPath();ctx.moveTo(-20,-57);ctx.quadraticCurveTo(-44,-44,-37,-9);ctx.lineTo(-13,-29);ctx.closePath();ctx.fillStyle='#a492d3';ctx.fill();ctx.strokeStyle='#35405c';ctx.lineWidth=2;ctx.stroke();
+ ctx.beginPath();ctx.moveTo(20,-57);ctx.quadraticCurveTo(44,-44,37,-9);ctx.lineTo(13,-29);ctx.closePath();ctx.fillStyle='#bca9ed';ctx.fill();ctx.stroke();
+ ctx.beginPath();ctx.moveTo(-22,-30);ctx.bezierCurveTo(-34,-75,-18,-109,0,-123);ctx.bezierCurveTo(18,-109,34,-75,22,-30);ctx.closePath();
+ ctx.fillStyle='#e1e8f6';ctx.fill();ctx.strokeStyle='#3a4764';ctx.lineWidth=2;ctx.stroke();
+ ctx.beginPath();ctx.moveTo(-16,-102);ctx.quadraticCurveTo(-8,-117,0,-123);ctx.quadraticCurveTo(9,-116,16,-102);ctx.quadraticCurveTo(0,-94,-16,-102);ctx.fillStyle='#a394d4';ctx.fill();
+ circle(0,-77,17,'#8092b3','#a4afc7',2);circle(0,-77,12,'#24496b','#ddedf9',2);ellipse(-4,-81,4,6,'#a8e5ed66',null,1,.6);
+ rounded(-21,-33,42,9,3,'#a7b4cf');rounded(-12,-24,24,16,4,'#637a9b','#334462',2);
+ if(ready){line(-7,-14,-7,-8,'#b7f3d6',2);line(0,-14,0,-7,'#b7f3d6',2);line(7,-14,7,-8,'#b7f3d6',2);}
+ ctx.restore();
+}
+function drawStation(x,y){
+ ctx.save();ctx.translate(x,y);
+ rounded(-20,-43,40,37,7,'#6d7e9e','#333e58',2);rounded(-16,-39,32,24,5,'#d0ddec');
+ rounded(-11,-33,22,12,3,'#314d68');circle(-4,-27,2,'#a6f1d2');line(2,-28,7,-28,'#a3cbe2',1);
+ line(-12,-7,-16,0,'#7b91b0',5);line(12,-7,16,0,'#7b91b0',5);
+ line(0,-44,0,-62,'#a2b2cf',2);
+ ctx.beginPath();ctx.arc(-1,-68,14,.15,Math.PI-.15);ctx.fillStyle='#a7b9d0';ctx.fill();line(-1,-68,5,-78,'#a7b9d0',2);circle(6,-79,2,'#ffd998');
+ ctx.restore();
+}
+function drawIntro(){
+ const mobile=W<530;
+ drawBackground(0,0,true);
+ if(mobile){
+  drawPlanet(W*.84,360,51,0,.85);
+  drawPlanet(W*.18,380,17,1,.58);
+  drawPlatform({x:W*.47,y:509,w:W*.48,ground:false},0);
+  drawAstronaut(W*.70,495+(reducedMotion?0:Math.sin(time*2)*4),1.65,false,1,true,true);
+  drawAlien(W*.20,511,.51,true);
+  drawCollectible({x:W*.91,y:449,type:'star',phase:0});
+  drawCollectible({x:W*.40,y:445,type:'coin',phase:2});
+ }else{
+  const hx=W*.77;
+  drawPlanet(W*.81,128,79,0,.94);
+  drawPlanet(W*.53,87,19,1,.7);
+  drawPlatform({x:W*.575,y:419,w:W*.35,ground:false},0);
+  drawAstronaut(hx,409+(reducedMotion?0:Math.sin(time*1.9)*5),2.12,false,1,true,true);
+  drawAlien(W*.57,449,.59,true);
+  drawPlatform({x:W*.505,y:452,w:W*.115,ground:false},0);
+  drawCollectible({x:W*.62,y:307,type:'coin',phase:1});
+  drawCollectible({x:W*.91,y:329,type:'star',phase:2});
+  drawCollectible({x:W*.94,y:286,type:'coin',phase:4});
+  ctx.save();ctx.translate(W*.55,180);ctx.rotate(.45);drawRocket(0,0,.28,true);ctx.restore();
+  drawCrystal(W*.90,419,'#b6b0f0');
+ }
+ if(!mobile){
+  const vignette=ctx.createLinearGradient(0,0,W*.59,0);
+  vignette.addColorStop(0,'#12172ec0');vignette.addColorStop(.77,'#12172e30');vignette.addColorStop(1,'#12172e00');
+  ctx.fillStyle=vignette;ctx.fillRect(0,0,W*.59,H);
+ }
+}
+function drawWorld(){
+ drawBackground(levelIndex,camera,false);
+ ctx.save();ctx.translate(-camera,0);
+ const minX=camera-130,maxX=camera+W+140;
+ for(const p of world.platforms)if(p.x+p.w>minX&&p.x<maxX)drawPlatform(p);
+ for(let i=0;i<world.gates.length;i++){
+  const b=i*SEGMENT;
+  if(b+SEGMENT<minX||b>maxX)continue;
+  drawCrystal(b+38,GROUND,levels[levelIndex].color+'a6');
+  drawCrystal(b+227,GROUND-100,levels[levelIndex].surface+'b0');
+  if(i===0){
+   drawStation(b+104,GROUND);
+   if(levelIndex===0){
+    text('DOUBLE JUMP',b+355,GROUND-14,9,'#c5d5e7a0','center',900);
+    line(b+342,GROUND-4,b+355,GROUND-9,'#b1c7e877',1.2);
+    line(b+355,GROUND-9,b+368,GROUND-4,'#b1c7e877',1.2);
+   }
+  }
+  if(levelIndex===3){
+   drawAlien(b+203,GROUND-100,.65,true);
+  }else if(i%3===1){
+   drawAlien(b+97,GROUND,.43,true);
+  }
+ }
+ for(const c of world.collectibles)if(!c.taken&&c.x>minX&&c.x<maxX)drawCollectible(c);
+ for(const g of world.gates)if(g.x>minX&&g.x<maxX)drawGate(g);
+ if(world.exitX>minX&&world.exitX<maxX){
+  const ready=world.gates.every(g=>g.solved);
+  if(levelIndex===3){
+   rounded(world.exitX-75,GROUND-3,150,12,4,'#64758a','#b6cca4',1);
+   drawAlien(world.exitX,GROUND-5,1.4,true);
+   rounded(world.exitX-88,GROUND-188,176,26,8,'#15243edd','#bac59b66');
+   text(ready?'YOU DID IT, SPACE FRIEND!':'FRIENDSHIP DOCK',world.exitX,GROUND-171,10,'#deefbb','center',900);
+  }else{
+   drawRocket(world.exitX,GROUND,1,ready);
+   rounded(world.exitX-63,GROUND-165,126,25,7,'#111c35dd','#a4b6d366');
+   text(ready?'READY FOR TAKEOFF':'YOUR NEXT ADVENTURE',world.exitX,GROUND-149,9,ready?'#b8f1d5':'#a8b9d8','center',900);
+   line(world.exitX+79,GROUND,world.exitX+79,GROUND-72,'#a4b4ce',2);
+   ctx.beginPath();ctx.moveTo(world.exitX+79,GROUND-72);ctx.lineTo(world.exitX+112,GROUND-65);ctx.lineTo(world.exitX+79,GROUND-52);ctx.fillStyle=levels[levelIndex].color;ctx.fill();
+  }
+ }
+ if(player.onGround)ellipse(player.x,player.y+1,20,4,'#07162c55');
+ if(!(rescueTimer>0&&Math.floor(time*11)%2===0)){
+  drawAstronaut(player.x,player.y,1,Math.abs(player.vx)>20&&player.onGround,player.face,!player.onGround);
+ }
+ for(const p of particles){
+  ctx.globalAlpha=clamp(p.life*1.4,0,1);circle(p.x,p.y,p.r,p.color);
+ }
+ ctx.globalAlpha=1;ctx.restore();
+}
+function frame(timestamp){
+ const dt=Math.min((timestamp-lastTime)/1000||.016,.034);lastTime=timestamp;time+=dt;
+ if(state==='playing')physics(dt);
+ updateParticles(dt);
+ ctx.setTransform(dpr*scale,0,0,dpr*scale,0,0);
+ ctx.clearRect(0,0,W,H);
+ if(stage.classList.contains('is-intro'))drawIntro();else drawWorld();
+ requestAnimationFrame(frame);
+}
+
+$('startButton').addEventListener('click',startGame);
+$('playAgainButton').addEventListener('click',startGame);
+$('restartOverButton').addEventListener('click',startGame);
+$('restartPauseButton').addEventListener('click',startGame);
+$('retryButton').addEventListener('click',retryPlanet);
+$('pauseButton').addEventListener('click',togglePause);
+$('resumeButton').addEventListener('click',togglePause);
+$('interactButton').addEventListener('click',interact);
+$('closeQuizButton').addEventListener('click',closeQuestion);
+$('checkButton').addEventListener('click',submitAnswer);
+$('guideButton').addEventListener('click',()=>openHelp('flight'));
+$('sourceButton').addEventListener('click',()=>openHelp('source'));
+$('victoryNotesButton').addEventListener('click',()=>openHelp('grammar'));
+$('closeHelpButton').addEventListener('click',closeHelp);
+document.querySelectorAll('.help-tab').forEach(btn=>btn.addEventListener('click',()=>setHelpTab(btn.dataset.tab)));
+$('landButton').addEventListener('click',()=>{
+ if(state!=='travel')return;
+ $('travelModal').hidden=true;stats.lives=3;loadLevel(levelIndex+1);sound('launch');
+});
+$('soundButton').addEventListener('click',()=>{
+ soundOn=!soundOn;updateSoundButton();
+ try{localStorage.setItem('grammar-galaxy-sound',soundOn?'on':'off');}catch(e){}
+ if(soundOn){initAudio();sound('tap');}
+});
+function bindTouch(buttonId,dir){
+ const btn=$(buttonId);
+ btn.addEventListener('pointerdown',e=>{
+  e.preventDefault();if(state!=='playing')return;
+  btn.setPointerCapture(e.pointerId);btn.classList.add('pressed');
+  if(dir==='jump')jump();else touch[dir]=true;
+ });
+ function release(e){if(e)e.preventDefault();btn.classList.remove('pressed');if(dir!=='jump')touch[dir]=false;}
+ btn.addEventListener('pointerup',release);btn.addEventListener('pointercancel',release);btn.addEventListener('lostpointercapture',release);
+ btn.addEventListener('contextmenu',e=>e.preventDefault());
+}
+bindTouch('leftControl','left');bindTouch('rightControl','right');bindTouch('jumpControl','jump');
+
+canvas.addEventListener('pointerdown',e=>{
+ if(state!=='playing')return;
+ focusCanvas();
+ const rect=canvas.getBoundingClientRect(),x=(e.clientX-rect.left)/scale+camera,y=(e.clientY-rect.top)/scale;
+ const target=getInteraction();
+ if(target&&((target.type==='gate'&&Math.abs(x-target.gate.x)<60&&y>GROUND-195&&y<GROUND+25)||(target.type==='exit'&&Math.abs(x-world.exitX)<85&&y>GROUND-180)))interact();
+});
+document.addEventListener('keydown',e=>{
+ const k=e.key.toLowerCase();
+ if(k==='tab'){
+  const visible=[...document.querySelectorAll('.modal-layer')].filter(el=>!el.hidden);
+  if(visible.length){
+   const modal=visible[visible.length-1];
+   const nodes=[...modal.querySelectorAll('button:not(:disabled),input:not(:disabled),summary,[tabindex="0"]')].filter(el=>el.offsetWidth||el.offsetHeight);
+   if(nodes.length){
+    const first=nodes[0],last=nodes[nodes.length-1];
+    if(e.shiftKey&&(document.activeElement===first||!modal.contains(document.activeElement))){e.preventDefault();last.focus();}
+    else if(!e.shiftKey&&(document.activeElement===last||!modal.contains(document.activeElement))){e.preventDefault();first.focus();}
+   }
+  }
+  return;
+ }
+ if(k==='escape'){
+  e.preventDefault();
+  if(state==='help')closeHelp();
+  else if(state==='question')closeQuestion();
+  else if(state==='playing'||state==='paused')togglePause();
+  return;
+ }
+ if(state==='question'){
+  if(k==='enter'&&e.target.tagName!=='BUTTON'&&e.target.tagName!=='SUMMARY'){e.preventDefault();submitAnswer();}
+  else if(currentGate.q.kind==='choice'&&!quizLocked&&/^[123]$/.test(k)){
+   e.preventDefault();const i=Number(k)-1;if(i<currentGate.options.length)selectChoice(i);
+  }
+  return;
+ }
+ if(state!=='playing')return;
+ if(['arrowleft','arrowright','arrowup','arrowdown',' ','a','d','w','e','p'].includes(k))e.preventDefault();
+ if(k==='arrowleft'||k==='a')keyboard.left=true;
+ if(k==='arrowright'||k==='d')keyboard.right=true;
+ if((k===' '||k==='w'||k==='arrowup')&&!e.repeat)jump();
+ if(k==='e'&&!e.repeat)interact();
+ if(k==='p'&&!e.repeat)togglePause();
+});
+document.addEventListener('keyup',e=>{
+ const k=e.key.toLowerCase();
+ if(k==='arrowleft'||k==='a')keyboard.left=false;
+ if(k==='arrowright'||k==='d')keyboard.right=false;
+});
+window.addEventListener('blur',clearInput);
+document.addEventListener('visibilitychange',()=>{
+ if(document.hidden){clearInput();if(state==='playing')togglePause();}
+});
+window.addEventListener('resize',resize);
+if('ResizeObserver'in window)new ResizeObserver(resize).observe(stage);
+
+prepareWorld(0);setState('start');updateHUD();updateSoundButton();resize();
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
